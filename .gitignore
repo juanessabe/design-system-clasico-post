@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.TemporaryItems
+.AppleDouble
+.LSOverride
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*~
+
+# Archivos ajenos al design system (no subir al repo público)
+000_PRESUPUESTO_CLIENTE_TIPO_MARCA-ARTISTA.html
+000_PRESUPUESTO_CLIENTE_TIPO_MARCA-ARTISTA.pdf
+INSTRUCCIONES.TXT
+LOGOS-COTIZACIONES/
+_update_dashboard_v4.py

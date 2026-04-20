@@ -1,0 +1,4813 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clásico Post — Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Dela+Gothic+One&family=Anton&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   CLÁSICO POST — DESIGN SYSTEM
+   Versión 1.0 · Abril 2026
+   Sistema visual completo: tokens, liquid glass, componentes,
+   tipografía, color, animaciones y guías de uso.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ───────────────────────────── TOKENS ───────────────────────────── */
+:root {
+  /* Color base — identidad Clásico Post */
+  --negro: #111111;
+  --negro-profundo: #0a0a0a;
+  --crema: #F0EDE4;
+  --verde: #C6F135;
+  --verde-oscuro: #a8d420;
+  --naranja: #E85C1A;
+  --rojo: #e03e3e;
+  --blanco: #FFFFFF;
+
+  /* Secundarios de marca (paleta extendida) */
+  --verde-bosque: #2A6856;
+  --azul-marino: #1C3F87;
+  --amarillo: #F0C54A;
+
+  /* Grises funcionales */
+  --gris: #2a2a2a;
+  --gris-medio: #3d3d3d;
+  --gris-claro: #888888;
+
+  /* Colores de departamento (dashboard) */
+  --dept-montaje: #C6F135;
+  --dept-color: #E85C1A;
+  --dept-audio: #8B5CF6;
+  --dept-vfx: #06B6D4;
+  --dept-animacion: #F59E0B;
+  --dept-conform: #aaaaaa;
+
+  /* Texto */
+  --text-primary: var(--crema);
+  --text-secondary: rgba(240, 237, 228, 0.5);
+  --text-tertiary: rgba(240, 237, 228, 0.28);
+  --text-muted: rgba(240, 237, 228, 0.18);
+
+  /* Liquid Glass — capas */
+  --glass-bg: rgba(255, 255, 255, 0.045);
+  --glass-bg-mid: rgba(255, 255, 255, 0.06);
+  --glass-bg-strong: rgba(255, 255, 255, 0.08);
+  --glass-bg-window: rgba(10, 10, 10, 0.52);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-soft: rgba(255, 255, 255, 0.06);
+  --glass-border-hover: rgba(198, 241, 53, 0.25);
+
+  /* Liquid Glass — efectos */
+  --glass-blur: blur(60px) saturate(180%);
+  --glass-blur-strong: blur(80px) saturate(1.8) brightness(1.05);
+  --glass-blur-soft: blur(40px) saturate(1.5);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --glass-highlight-soft: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --glass-inner: inset 0 0 0 0.5px rgba(255, 255, 255, 0.04);
+  --glass-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+  --glass-shadow-deep: 0 48px 120px rgba(0, 0, 0, 0.75), 0 8px 32px rgba(0, 0, 0, 0.4);
+
+  /* Gradientes de marca */
+  --grad-verde: linear-gradient(135deg, rgba(198,241,53,0.93) 0%, rgba(168,212,32,0.88) 100%);
+  --grad-window: radial-gradient(circle at 80% 20%, rgba(198,241,53,0.06) 0%, transparent 50%),
+                 radial-gradient(circle at 20% 80%, rgba(232,92,26,0.04) 0%, transparent 50%),
+                 radial-gradient(ellipse at 50% 50%, #151210 0%, #0a0a0a 100%);
+  --grad-body-dark: radial-gradient(circle at 78% 8%, rgba(198,241,53,0.07) 0%, transparent 45%),
+                    radial-gradient(circle at 18% 88%, rgba(232,92,26,0.05) 0%, transparent 50%),
+                    radial-gradient(ellipse at 50% 50%, #181818 0%, #111111 100%);
+
+  /* Easings */
+  --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Radios */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-pill: 999px;
+
+  /* Espaciado */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+}
+
+/* ───────────────────────────── RESET ───────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-weight: 400;
+  color: var(--text-primary);
+  background: var(--grad-body-dark);
+  background-attachment: fixed;
+  min-height: 100vh;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* Grain overlay global */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.35 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+::selection { background: var(--verde); color: var(--negro); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(198,241,53,0.18); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(198,241,53,0.35); }
+
+/* ───────────────────────────── LAYOUT ───────────────────────────── */
+.ds-shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+/* ────── SIDEBAR NAV ────── */
+.ds-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: var(--sp-8) var(--sp-6);
+  border-right: 1px solid var(--glass-border-soft);
+  background: rgba(17, 17, 17, 0.45);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+  overflow-y: auto;
+}
+
+.ds-brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.ds-brand-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.18), rgba(255,255,255,0.02) 70%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight), 0 8px 24px rgba(0,0,0,0.5);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+}
+.ds-brand-mark::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.22), transparent 55%),
+              radial-gradient(circle at 65% 75%, rgba(198,241,53,0.18), transparent 60%);
+}
+
+.ds-brand-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: 2.5px;
+  color: var(--crema);
+  margin-top: var(--sp-3);
+}
+
+.ds-brand-sub {
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.ds-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ds-nav-group {
+  font-size: 0.62rem;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: var(--sp-4) var(--sp-3) var(--sp-2);
+  font-weight: 600;
+}
+
+.ds-nav a {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 9px var(--sp-3);
+  border-radius: var(--r-sm);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.82rem;
+  transition: all 0.25s var(--ease-premium);
+  border: 1px solid transparent;
+}
+
+.ds-nav a:hover {
+  background: var(--glass-bg-mid);
+  color: var(--crema);
+  border-color: var(--glass-border-soft);
+}
+
+.ds-nav a .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: all 0.25s var(--ease-premium);
+}
+
+.ds-nav a:hover .dot { background: var(--verde); box-shadow: 0 0 8px var(--verde); }
+
+.ds-nav a.active {
+  background: rgba(198,241,53,0.08);
+  border-color: rgba(198,241,53,0.18);
+  color: var(--verde);
+}
+.ds-nav a.active .dot { background: var(--verde); box-shadow: 0 0 8px var(--verde); }
+
+.ds-sidebar-footer {
+  margin-top: auto;
+  padding-top: var(--sp-6);
+  border-top: 1px solid var(--glass-border-soft);
+  font-size: 0.68rem;
+  color: var(--text-tertiary);
+  letter-spacing: 1px;
+}
+
+/* ────── MAIN ────── */
+.ds-main {
+  padding: var(--sp-16) var(--sp-12);
+  max-width: 1280px;
+}
+
+/* ────── HERO ────── */
+.ds-hero {
+  padding: var(--sp-16) 0 var(--sp-12);
+  border-bottom: 1px solid var(--glass-border-soft);
+  margin-bottom: var(--sp-16);
+  position: relative;
+}
+
+.ds-eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--verde);
+  margin-bottom: var(--sp-4);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.ds-eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--verde);
+}
+
+.ds-hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.5rem, 8vw, 6.5rem);
+  line-height: 0.92;
+  letter-spacing: 2px;
+  margin-bottom: var(--sp-6);
+  color: var(--crema);
+}
+
+.ds-hero h1 em {
+  font-style: normal;
+  color: var(--verde);
+}
+
+.ds-hero-lead {
+  font-size: 1.1rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  max-width: 640px;
+  margin-bottom: var(--sp-8);
+}
+
+.ds-hero-meta {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-4);
+  max-width: 860px;
+}
+
+.ds-hero-meta-item {
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: var(--r-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border-soft);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+.ds-hero-meta-item .k {
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  display: block;
+  margin-bottom: 4px;
+}
+.ds-hero-meta-item .v {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  color: var(--crema);
+}
+
+/* ────── SECTION ────── */
+.ds-section {
+  padding: var(--sp-12) 0;
+  border-bottom: 1px solid var(--glass-border-soft);
+  scroll-margin-top: var(--sp-8);
+}
+
+.ds-section:last-of-type { border-bottom: none; }
+
+.ds-section-head {
+  margin-bottom: var(--sp-10);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-8);
+  flex-wrap: wrap;
+}
+
+.ds-section-head-main { max-width: 680px; }
+
+.ds-section-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 3px;
+  color: var(--verde);
+  margin-bottom: var(--sp-3);
+}
+
+.ds-section h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  line-height: 0.95;
+  letter-spacing: 1.5px;
+  margin-bottom: var(--sp-4);
+}
+
+.ds-section-desc {
+  color: var(--text-secondary);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  max-width: 620px;
+}
+
+.ds-section-aside {
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: var(--sp-2) var(--sp-4);
+  border: 1px solid var(--glass-border-soft);
+  border-radius: var(--r-pill);
+  background: var(--glass-bg);
+}
+
+/* ────── SUBSECTION ────── */
+.ds-sub {
+  margin-top: var(--sp-10);
+}
+
+.ds-sub-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  margin-bottom: var(--sp-5);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.ds-sub-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--glass-border-soft), transparent);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COLORES
+   ═══════════════════════════════════════════════════════════════ */
+.palette {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--sp-4);
+}
+
+.swatch {
+  border-radius: var(--r-md);
+  overflow: hidden;
+  border: 1px solid var(--glass-border-soft);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-soft);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  transition: all 0.35s var(--ease-premium);
+}
+
+.swatch:hover {
+  transform: translateY(-2px);
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.swatch-chip {
+  height: 120px;
+  position: relative;
+}
+
+.swatch-chip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: var(--glass-highlight-soft);
+  pointer-events: none;
+}
+
+.swatch-meta {
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.swatch-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 1.5px;
+}
+
+.swatch-hex {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+}
+
+.swatch-usage {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+/* Semantic colors row */
+.semantic-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--sp-3);
+  margin-top: var(--sp-6);
+}
+
+.semantic-row .sem {
+  padding: var(--sp-4);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--glass-border-soft);
+  background: var(--glass-bg);
+  text-align: center;
+}
+
+.semantic-row .sem .dot-sem {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin: 0 auto var(--sp-2);
+  box-shadow: 0 0 16px currentColor;
+}
+
+.semantic-row .sem .sem-label {
+  font-size: 0.65rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.semantic-row .sem .sem-hex {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TIPOGRAFÍA
+   ═══════════════════════════════════════════════════════════════ */
+.type-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--sp-8);
+  padding: var(--sp-8) 0;
+  border-bottom: 1px solid var(--glass-border-soft);
+  align-items: start;
+}
+
+.type-row:last-child { border-bottom: none; }
+
+.type-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.type-family {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 1.5px;
+}
+
+.type-role {
+  font-size: 0.68rem;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--verde);
+}
+
+.type-weights {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+}
+
+.type-sample-display {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 6rem;
+  line-height: 0.9;
+  letter-spacing: 2px;
+  color: var(--crema);
+}
+
+.type-sample-impact {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: 4rem;
+  line-height: 0.95;
+  letter-spacing: -1px;
+  color: var(--crema);
+}
+
+.type-sample-anton {
+  font-family: 'Anton', sans-serif;
+  font-size: 4.5rem;
+  line-height: 0.9;
+  letter-spacing: 1px;
+  color: var(--crema);
+  text-transform: uppercase;
+}
+
+.type-sample-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  max-width: 640px;
+}
+
+.type-sample-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--verde);
+}
+
+.type-scale {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--sp-3);
+  margin-top: var(--sp-6);
+}
+
+.type-scale-item {
+  padding: var(--sp-4);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--glass-border-soft);
+  background: var(--glass-bg);
+}
+
+.type-scale-item .tok {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--verde);
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: var(--sp-2);
+}
+
+.type-scale-item .sz {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 1px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIQUID GLASS
+   ═══════════════════════════════════════════════════════════════ */
+.glass-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--sp-6);
+  align-items: stretch;
+}
+
+.glass-demo {
+  position: relative;
+  border-radius: var(--r-lg);
+  padding: var(--sp-10);
+  min-height: 360px;
+  background: var(--glass-bg-window);
+  backdrop-filter: var(--glass-blur-strong);
+  -webkit-backdrop-filter: var(--glass-blur-strong);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-deep), var(--glass-highlight), var(--glass-inner);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.glass-demo::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+  pointer-events: none;
+}
+
+.glass-demo-caption {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 2px;
+}
+
+.glass-demo-sub {
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* Floating chips inside glass demo */
+.glass-demo .chip-float {
+  position: absolute;
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--r-pill);
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  font-size: 0.68rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--crema);
+  box-shadow: var(--glass-highlight), 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.glass-demo .chip-float.c1 { top: 8%; left: 10%; color: var(--verde); border-color: rgba(198,241,53,0.3); }
+.glass-demo .chip-float.c2 { bottom: 12%; right: 10%; color: var(--naranja); border-color: rgba(232,92,26,0.35); }
+.glass-demo .chip-float.c3 { top: 18%; right: 12%; }
+
+.glass-tokens {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-2);
+  align-content: start;
+}
+
+.token-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 70px;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--glass-border-soft);
+  background: var(--glass-bg);
+  align-items: center;
+  font-size: 0.78rem;
+}
+
+.token-row:hover {
+  border-color: var(--glass-border);
+  background: var(--glass-bg-mid);
+}
+
+.token-row .name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--verde);
+}
+
+.token-row .val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.token-row .preview {
+  height: 28px;
+  border-radius: var(--r-xs);
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight-soft);
+}
+
+.token-row .preview.bg-glass { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.token-row .preview.bg-dark { background: var(--negro-profundo); }
+.token-row .preview.bg-verde { background: var(--verde); }
+.token-row .preview.bg-naranja { background: var(--naranja); }
+
+/* Liquid glass layers visualization */
+.layer-stack {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-4);
+  margin-top: var(--sp-6);
+}
+
+.layer {
+  padding: var(--sp-6);
+  border-radius: var(--r-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border-soft);
+  backdrop-filter: var(--glass-blur-soft);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  text-align: center;
+}
+
+.layer .lvl {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem;
+  color: var(--verde);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.layer .opacity-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  margin-top: var(--sp-2);
+}
+
+.layer .label {
+  font-size: 0.68rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-top: var(--sp-3);
+}
+
+.layer-base { background: var(--glass-bg); }
+.layer-mid { background: var(--glass-bg-mid); }
+.layer-strong { background: var(--glass-bg-strong); }
+
+/* ═══════════════════════════════════════════════════════════════
+   FONDOS
+   ═══════════════════════════════════════════════════════════════ */
+.bg-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-5);
+}
+
+.bg-card {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  border: 1px solid var(--glass-border-soft);
+  position: relative;
+  min-height: 220px;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--sp-6);
+}
+
+.bg-card-meta {
+  position: relative;
+  z-index: 2;
+  background: rgba(10,10,10,0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border-soft);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-sm);
+}
+
+.bg-card-meta .n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 1.5px;
+  margin-bottom: 2px;
+}
+
+.bg-card-meta .d {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.66rem;
+  color: var(--text-tertiary);
+}
+
+.bg-dark-radial {
+  background: var(--grad-body-dark);
+}
+
+.bg-window {
+  background: var(--grad-window);
+}
+
+.bg-day {
+  background:
+    radial-gradient(circle at 78% 8%, rgba(198,241,53,0.22) 0%, transparent 45%),
+    radial-gradient(circle at 18% 88%, rgba(232,92,26,0.18) 0%, transparent 50%),
+    linear-gradient(135deg, #F6F2E6 0%, #EEE8D6 100%);
+  color: #111;
+}
+
+.bg-grain {
+  background: #141414;
+  position: relative;
+}
+.bg-grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.15;
+  mix-blend-mode: overlay;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BOTONES
+   ═══════════════════════════════════════════════════════════════ */
+.btn-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--sp-5);
+}
+
+.btn-demo {
+  padding: var(--sp-6);
+  border-radius: var(--r-md);
+  border: 1px solid var(--glass-border-soft);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-soft);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  min-height: 160px;
+  justify-content: space-between;
+}
+
+.btn-demo-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp-3);
+}
+
+.btn-demo-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 1.2px;
+}
+
+.btn-demo-class {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--text-tertiary);
+}
+
+.btn-demo-stage {
+  display: flex;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  align-items: center;
+  padding: var(--sp-3);
+  border-radius: var(--r-sm);
+  background: rgba(0,0,0,0.22);
+  border: 1px dashed var(--glass-border-soft);
+  min-height: 70px;
+}
+
+/* --- Botón primario (verde sólido) --- */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 11px 22px;
+  background: var(--verde);
+  color: var(--negro);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-premium);
+  box-shadow: 0 6px 20px rgba(198,241,53,0.25), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.btn-primary:hover {
+  background: var(--verde-oscuro);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(198,241,53,0.35);
+}
+
+/* --- Botón outline --- */
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--crema);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 1px solid var(--crema);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-premium);
+}
+.btn-outline:hover {
+  background: var(--crema);
+  color: var(--negro);
+}
+
+/* --- Botón glass --- */
+.btn-glass {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 11px 22px;
+  background: var(--glass-bg-strong);
+  color: var(--crema);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-premium);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+}
+.btn-glass:hover {
+  background: var(--glass-bg-strong);
+  border-color: var(--verde);
+  color: var(--verde);
+  box-shadow: 0 8px 28px rgba(198,241,53,0.2), var(--glass-highlight);
+}
+
+/* --- Pill / filtro --- */
+.filter-pill {
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: var(--text-secondary);
+  transition: all 0.25s var(--ease-premium);
+}
+.filter-pill:hover { background: rgba(255,255,255,0.08); color: var(--crema); }
+.filter-pill.active {
+  background: rgba(198,241,53,0.1);
+  border-color: rgba(198,241,53,0.25);
+  color: var(--verde);
+}
+
+/* --- Mode toggle --- */
+.mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 6px 12px 6px 8px;
+  border-radius: var(--r-pill);
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  color: var(--crema);
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  font-family: 'Bebas Neue', sans-serif;
+  transition: all 0.3s var(--ease-premium);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.mode-toggle .moon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--crema), #bdb6a2);
+  box-shadow: inset -3px -2px 0 rgba(0,0,0,0.25);
+}
+
+.mode-toggle.day .moon {
+  background: radial-gradient(circle at 30% 30%, #ffd97a, #e8a333);
+  box-shadow: 0 0 12px rgba(255, 196, 64, 0.5);
+}
+
+/* --- Service pill con gradiente verde (ej. botón export / totales) --- */
+.btn-export {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 10px 20px;
+  background: var(--grad-verde);
+  color: var(--negro);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.88rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  box-shadow: 0 8px 28px rgba(198,241,53,0.28), inset 0 1px 0 rgba(255,255,255,0.5);
+  transition: transform 0.3s var(--ease-premium);
+}
+.btn-export:hover { transform: translateY(-1px); }
+
+/* --- Icon button (cursor arrow) --- */
+.btn-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: var(--crema);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-premium);
+  box-shadow: var(--glass-highlight);
+}
+.btn-icon:hover {
+  background: var(--verde);
+  color: var(--negro);
+  border-color: var(--verde);
+  transform: rotate(45deg);
+}
+.btn-icon svg { width: 16px; height: 16px; }
+
+/* --- Ghost / text --- */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 8px 12px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  border: none;
+  cursor: pointer;
+  transition: color 0.25s var(--ease-premium);
+}
+.btn-ghost:hover { color: var(--verde); }
+.btn-ghost .ic { width: 14px; height: 14px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   PILLS · BADGES · TAGS
+   ═══════════════════════════════════════════════════════════════ */
+.pills-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  padding: var(--sp-6);
+  border-radius: var(--r-md);
+  border: 1px solid var(--glass-border-soft);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-soft);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+}
+
+.service-badge {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  padding: 3px 9px;
+  border-radius: var(--r-xs);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.service-badge.b-montaje { color: var(--dept-montaje); border-color: rgba(198,241,53,0.25); }
+.service-badge.b-color { color: var(--dept-color); border-color: rgba(232,92,26,0.3); }
+.service-badge.b-audio { color: var(--dept-audio); border-color: rgba(139,92,246,0.3); }
+.service-badge.b-vfx { color: var(--dept-vfx); border-color: rgba(6,182,212,0.3); }
+.service-badge.b-anim { color: var(--dept-animacion); border-color: rgba(245,158,11,0.3); }
+
+.cap-pill {
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  font-size: 0.7rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  color: var(--crema);
+}
+
+.planos-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  font-size: 0.65rem;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  background: rgba(198,241,53,0.12);
+  border: 1px solid rgba(198,241,53,0.28);
+  color: var(--verde);
+  font-weight: 600;
+}
+.planos-badge::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--verde);
+  box-shadow: 0 0 6px var(--verde);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  font-size: 0.62rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.status-pill::before { content: ''; width: 5px; height: 5px; border-radius: 50%; }
+.status-pill.s-active { background: rgba(198,241,53,0.1); color: var(--verde); }
+.status-pill.s-active::before { background: var(--verde); box-shadow: 0 0 6px var(--verde); }
+.status-pill.s-warn { background: rgba(245,158,11,0.12); color: #F59E0B; }
+.status-pill.s-warn::before { background: #F59E0B; }
+.status-pill.s-overdue { background: rgba(224,62,62,0.12); color: var(--rojo); }
+.status-pill.s-overdue::before { background: var(--rojo); }
+.status-pill.s-done { background: rgba(255,255,255,0.05); color: var(--text-tertiary); }
+.status-pill.s-done::before { background: var(--text-tertiary); }
+
+/* ═══════════════════════════════════════════════════════════════
+   ÍCONOS — círculos de servicio
+   ═══════════════════════════════════════════════════════════════ */
+.icons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--sp-5);
+}
+
+.icon-card {
+  padding: var(--sp-6);
+  border-radius: var(--r-md);
+  border: 1px solid var(--glass-border-soft);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-soft);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  text-align: center;
+  transition: all 0.35s var(--ease-premium);
+}
+
+.icon-card:hover {
+  border-color: var(--glass-border);
+  transform: translateY(-2px);
+  background: var(--glass-bg-mid);
+}
+
+.service-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--glass-highlight), 0 8px 24px rgba(0,0,0,0.3);
+  position: relative;
+  transition: all 0.4s var(--ease-premium);
+}
+
+.icon-card:hover .service-icon {
+  background: var(--verde);
+  border-color: var(--verde);
+  box-shadow: 0 0 40px rgba(198,241,53,0.3), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.service-icon svg {
+  width: 32px;
+  height: 32px;
+  stroke: var(--crema);
+  fill: none;
+  stroke-width: 1.4;
+  transition: stroke 0.3s var(--ease-premium);
+}
+
+.icon-card:hover .service-icon svg { stroke: var(--negro); }
+
+.icon-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 2px;
+  color: var(--crema);
+}
+
+.icon-desc {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  line-height: 1.4;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ISOTIPO · LOGOTIPO
+   ═══════════════════════════════════════════════════════════════ */
+.logo-scene {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-5);
+}
+
+.logo-card {
+  padding: var(--sp-8);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-card.inverted {
+  background: var(--crema);
+  color: var(--negro);
+  border-color: rgba(0,0,0,0.08);
+}
+
+.logo-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.logo-card-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+}
+
+.logo-card-variant {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--text-tertiary);
+  letter-spacing: 1px;
+}
+
+.logo-card.inverted .logo-card-variant { color: rgba(17,17,17,0.5); }
+
+.logo-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  padding: var(--sp-4);
+}
+
+/* Isotipo 3D glass (CSS simulation) */
+.iso-glass {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  position: relative;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.12) 18%, rgba(255,255,255,0) 42%),
+    radial-gradient(circle at 70% 78%, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 40%, transparent 70%),
+    radial-gradient(circle at 50% 50%, rgba(30,30,30,0.9) 0%, rgba(10,10,10,0.95) 100%);
+  box-shadow:
+    inset 0 -6px 16px rgba(0,0,0,0.8),
+    inset 0 4px 10px rgba(255,255,255,0.28),
+    0 16px 48px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(255,255,255,0.1);
+  animation: float 6s ease-in-out infinite;
+}
+
+.iso-glass::before {
+  content: '';
+  position: absolute;
+  top: 12%;
+  left: 18%;
+  width: 35%;
+  height: 30%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 70%);
+  filter: blur(2px);
+}
+
+.iso-glass::after {
+  content: '';
+  position: absolute;
+  bottom: 12%;
+  right: 22%;
+  width: 22%;
+  height: 8%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(198,241,53,0.4) 0%, transparent 70%);
+  filter: blur(3px);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+.logo-wordmark {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  letter-spacing: 4px;
+  color: var(--crema);
+  text-align: center;
+  line-height: 0.9;
+}
+
+.logo-card.inverted .logo-wordmark { color: var(--negro); }
+
+.logo-wordmark-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--verde);
+  margin: 0 4px 8px;
+  vertical-align: middle;
+  box-shadow: 0 0 12px var(--verde);
+}
+
+.logo-card-footer {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.66rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.8px;
+}
+.logo-card.inverted .logo-card-footer { color: rgba(17,17,17,0.55); }
+
+/* Clear-space diagram */
+.clear-space {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-4);
+  margin-top: var(--sp-6);
+}
+
+.cs-card {
+  padding: var(--sp-5);
+  border-radius: var(--r-md);
+  border: 1px solid var(--glass-border-soft);
+  background: var(--glass-bg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.cs-visual {
+  aspect-ratio: 16/9;
+  border-radius: var(--r-sm);
+  border: 1px dashed rgba(198,241,53,0.25);
+  background: rgba(198,241,53,0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.cs-visual .inner {
+  width: 55%;
+  aspect-ratio: 1;
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.28), rgba(10,10,10,0.95));
+}
+
+.cs-card .cs-name {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 1.5px;
+  font-size: 0.9rem;
+}
+
+.cs-card .cs-rule {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARDS — capsule, kpi, project, equipo, nota
+   ═══════════════════════════════════════════════════════════════ */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: var(--sp-5);
+}
+
+/* KPI */
+.kpi-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-soft);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-6);
+  transition: all 0.25s var(--ease-premium);
+}
+
+.kpi-card:hover {
+  background: var(--glass-bg-mid);
+  border-color: var(--glass-border-hover);
+}
+
+.kpi-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.8rem;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.kpi-label {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.kpi-card.accent-verde .kpi-value { color: var(--verde); }
+.kpi-card.accent-naranja .kpi-value { color: var(--naranja); }
+.kpi-card.accent-rojo .kpi-value { color: var(--rojo); }
+.kpi-card.accent-cyan .kpi-value { color: var(--dept-vfx); }
+
+/* Capsule card (de presupuesto) */
+.cap-card {
+  padding: var(--sp-6);
+  border-radius: var(--r-lg);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.cap-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--glass-border-soft);
+}
+
+.cap-card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 1.2px;
+}
+
+.cap-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.cap-card-total {
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--glass-border-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.cap-card-total .k {
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.cap-card-total .v {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  color: var(--verde);
+}
+
+/* Proyect card (sidebar dashboard) */
+.project-card-dash {
+  padding: var(--sp-4);
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid transparent;
+  transition: all 0.25s var(--ease-premium);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.project-card-dash:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: var(--glass-border-soft);
+}
+.project-card-dash.active {
+  background: rgba(198,241,53,0.05);
+  border-color: rgba(198,241,53,0.18);
+  box-shadow: 0 0 30px rgba(198,241,53,0.07);
+}
+
+.pc-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.pc-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.pc-bar {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.pc-fill {
+  height: 100%;
+  background: var(--verde);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(198,241,53,0.4);
+  transition: width 0.6s var(--ease-premium);
+}
+
+.pc-pct {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.pc-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.pc-badges {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+/* Equipo card */
+.equipo-card {
+  padding: var(--sp-5);
+  border-radius: var(--r-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border-soft);
+  backdrop-filter: var(--glass-blur-soft);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  display: flex;
+  gap: var(--sp-4);
+  align-items: center;
+}
+
+.equipo-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(198,241,53,0.12);
+  color: var(--verde);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  border: 1px solid rgba(198,241,53,0.25);
+  flex-shrink: 0;
+}
+
+.equipo-info { display: flex; flex-direction: column; gap: 2px; }
+.equipo-nombre {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 1.2px;
+}
+.equipo-rol {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.8px;
+}
+
+/* Nota card */
+.nota-card {
+  padding: var(--sp-5);
+  border-radius: var(--r-md);
+  background: rgba(232,92,26,0.04);
+  border-left: 3px solid var(--naranja);
+  border-top: 1px solid rgba(232,92,26,0.12);
+  border-right: 1px solid rgba(232,92,26,0.06);
+  border-bottom: 1px solid rgba(232,92,26,0.06);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  position: relative;
+}
+.nota-card::before {
+  content: 'NOTA';
+  position: absolute;
+  top: -8px;
+  left: var(--sp-4);
+  padding: 2px 8px;
+  background: var(--naranja);
+  color: var(--negro);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  border-radius: var(--r-xs);
+}
+
+/* Scenario card (verde highlight) */
+.scenario-card {
+  padding: var(--sp-5);
+  border-radius: var(--r-md);
+  background: rgba(198,241,53,0.04);
+  border: 1px solid rgba(198,241,53,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.scenario-head {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.92rem;
+  letter-spacing: 1.5px;
+  color: var(--verde);
+}
+.scenario-desc { font-size: 0.82rem; line-height: 1.55; color: var(--text-secondary); }
+
+/* Total-final card */
+.total-final-card {
+  padding: var(--sp-6);
+  border-radius: var(--r-lg);
+  background: var(--grad-verde);
+  color: var(--negro);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 16px 48px rgba(198,241,53,0.3), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.total-final-card .label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.total-final-card .amount {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.6rem;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FLECHAS · LÍNEAS · ANIMACIONES
+   ═══════════════════════════════════════════════════════════════ */
+.arrows-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--sp-5);
+}
+
+.arrow-demo {
+  padding: var(--sp-6);
+  border-radius: var(--r-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border-soft);
+  backdrop-filter: var(--glass-blur-soft);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--sp-4);
+}
+
+.arrow-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-5);
+}
+
+.arrow-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 1.5px;
+}
+
+.arrow-desc {
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+}
+
+/* Arrow line */
+.line-reveal {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--crema) 50%, transparent 100%);
+  position: relative;
+}
+.line-reveal::after {
+  content: '';
+  position: absolute;
+  right: 8%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-top: 1px solid var(--crema);
+  border-right: 1px solid var(--crema);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* Arrow long slash */
+.arrow-long {
+  width: 220px;
+  height: 1px;
+  background: var(--verde);
+  position: relative;
+  animation: arrow-push 2.4s var(--ease-premium) infinite;
+}
+.arrow-long::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-top: 2px solid var(--verde);
+  border-right: 2px solid var(--verde);
+  transform: translateY(-50%) rotate(45deg);
+}
+@keyframes arrow-push {
+  0%, 100% { transform: translateX(0); opacity: 0.85; }
+  50% { transform: translateX(8px); opacity: 1; }
+}
+
+/* Arrow circular / rotate */
+.arrow-circle {
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--crema);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: rotate-slow 8s linear infinite;
+}
+.arrow-circle::after {
+  content: '→';
+  font-size: 1.4rem;
+  color: var(--crema);
+}
+@keyframes rotate-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Diagonal break */
+.arrow-diagonal {
+  width: 180px;
+  height: 120px;
+  position: relative;
+}
+.arrow-diagonal svg { width: 100%; height: 100%; overflow: visible; }
+.arrow-diagonal path {
+  stroke: var(--verde);
+  stroke-width: 1.2;
+  fill: none;
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+  animation: draw 3s var(--ease-premium) infinite;
+}
+@keyframes draw {
+  0% { stroke-dashoffset: 320; }
+  60% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -320; }
+}
+
+/* Pulse dot */
+.pulse-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--verde);
+  box-shadow: 0 0 0 0 rgba(198,241,53,0.7);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(198,241,53,0.7); }
+  70% { box-shadow: 0 0 0 20px rgba(198,241,53,0); }
+  100% { box-shadow: 0 0 0 0 rgba(198,241,53,0); }
+}
+
+/* Section divider with corner arrows */
+.section-line {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+}
+.section-line::before,
+.section-line::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--glass-border);
+}
+.section-line .label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 3px;
+  color: var(--text-secondary);
+}
+
+/* Animations inventory table */
+.anim-list {
+  display: grid;
+  grid-template-columns: 220px 1fr 140px;
+  gap: 0;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  border: 1px solid var(--glass-border-soft);
+  margin-top: var(--sp-6);
+}
+
+.anim-list .h {
+  padding: var(--sp-3) var(--sp-4);
+  font-size: 0.62rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  background: var(--glass-bg);
+  border-bottom: 1px solid var(--glass-border-soft);
+}
+
+.anim-list .c {
+  padding: var(--sp-4);
+  font-size: 0.8rem;
+  border-bottom: 1px solid var(--glass-border-soft);
+  background: rgba(255,255,255,0.015);
+}
+.anim-list > *:nth-last-child(-n+3) { border-bottom: none; }
+
+.anim-list .c.name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  color: var(--verde);
+}
+.anim-list .c.desc { color: var(--text-secondary); }
+.anim-list .c.dur {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NAVEGACIÓN (nav-pill / overlay pattern)
+   ═══════════════════════════════════════════════════════════════ */
+.nav-demo {
+  padding: var(--sp-6);
+  border-radius: var(--r-lg);
+  background: var(--grad-window);
+  border: 1px solid var(--glass-border);
+  min-height: 240px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cp-nav-wrap {
+  position: absolute;
+  top: var(--sp-5);
+  right: var(--sp-5);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.cp-nav-pill {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 9px 18px 9px 12px;
+  border-radius: var(--r-pill);
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  color: var(--crema);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+  transition: all 0.3s var(--ease-premium);
+}
+
+.cp-nav-pill:hover {
+  border-color: var(--verde);
+  color: var(--verde);
+}
+
+.cp-nav-pill .burger {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.cp-nav-pill .burger span {
+  width: 14px;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 2px;
+}
+
+.cp-nav-links {
+  display: flex;
+  gap: var(--sp-2);
+  padding: 6px;
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-pill);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.cp-nav-links a {
+  padding: 6px 14px;
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: var(--r-pill);
+  transition: all 0.25s var(--ease-premium);
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+}
+.cp-nav-links a:hover { color: var(--crema); }
+.cp-nav-links a.active {
+  background: var(--crema);
+  color: var(--negro);
+}
+
+.nav-demo-stage {
+  position: absolute;
+  bottom: var(--sp-6);
+  left: var(--sp-6);
+}
+.nav-demo-stage h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.4rem;
+  letter-spacing: 2px;
+  line-height: 0.95;
+}
+.nav-demo-stage p {
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-top: var(--sp-2);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CODE BLOCK
+   ═══════════════════════════════════════════════════════════════ */
+.code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--glass-border-soft);
+  border-radius: var(--r-sm);
+  padding: var(--sp-4);
+  overflow-x: auto;
+  margin-top: var(--sp-4);
+  white-space: pre;
+}
+
+.code .k { color: var(--verde); }
+.code .v { color: var(--crema); }
+.code .c { color: var(--text-tertiary); font-style: italic; }
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════════════════════ */
+.ds-footer {
+  padding: var(--sp-12) 0 var(--sp-16);
+  text-align: center;
+  border-top: 1px solid var(--glass-border-soft);
+  margin-top: var(--sp-12);
+}
+
+.ds-footer-wordmark {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3.6rem;
+  letter-spacing: 4px;
+  margin-bottom: var(--sp-4);
+}
+
+.ds-footer-meta {
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SCROLL REVEAL
+   ═══════════════════════════════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.8s var(--ease-premium), transform 0.8s var(--ease-premium);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════════════════════════════════════
+   ASSETS REALES — isotipo, logotipo, iconos
+   ═══════════════════════════════════════════════════════════════ */
+.brand-iso-img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+}
+
+.iso-real {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 12px 32px rgba(0,0,0,0.45));
+  animation: float 6s ease-in-out infinite;
+}
+.iso-real.sm { width: 100px; height: 100px; }
+.iso-real.xs { width: 48px; height: 48px; animation: none; filter: none; }
+
+.service-icon-real {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+  transition: opacity 0.3s var(--ease-premium);
+}
+.service-icon.has-real { padding: 0; }
+/* Hover: en el círculo verde, usar la versión NEGRO del ícono */
+.icon-card .service-icon .ico-default { opacity: 1; }
+.icon-card .service-icon .ico-hover { opacity: 0; position: absolute; }
+.icon-card:hover .service-icon .ico-default { opacity: 0; }
+.icon-card:hover .service-icon .ico-hover { opacity: 1; }
+
+.logo-asset {
+  max-width: 82%;
+  max-height: 140px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+.logo-asset.compact { max-height: 56px; }
+.logo-asset.corner { max-height: 72px; max-width: 60%; }
+
+.footer-logo-asset {
+  max-width: 360px;
+  width: 70%;
+  height: auto;
+  display: block;
+  margin: 0 auto var(--sp-4);
+}
+
+.asset-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-4);
+  margin-top: var(--sp-6);
+}
+.asset-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--sp-4);
+  margin-top: var(--sp-6);
+}
+
+.variant-card {
+  padding: var(--sp-5);
+  border-radius: var(--r-md);
+  border: 1px solid var(--glass-border-soft);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-soft);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  min-height: 180px;
+  justify-content: space-between;
+  transition: all 0.35s var(--ease-premium);
+}
+.variant-card:hover { border-color: var(--glass-border); transform: translateY(-2px); }
+.variant-card.light {
+  background: var(--crema);
+  border-color: rgba(0,0,0,0.08);
+}
+.variant-card.light .variant-label { color: rgba(17,17,17,0.7); }
+.variant-card.light .variant-hex { color: rgba(17,17,17,0.45); }
+
+.variant-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100px;
+}
+.variant-stage .iso-real { animation: none; filter: none; width: 88px; height: 88px; }
+.variant-stage .logo-asset { max-height: 72px; }
+
+.variant-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 1.5px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+.variant-hex {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   OVERLAYS · DROPDOWNS · MODALES (patrones live web)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Stage simulando una imagen de fondo para mostrar los overlays */
+.overlay-stage {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  padding: var(--sp-8) var(--sp-6);
+  background:
+    linear-gradient(135deg, rgba(80,100,60,0.4) 0%, rgba(40,30,20,0.5) 40%, rgba(20,30,50,0.55) 100%),
+    radial-gradient(circle at 30% 30%, rgba(198,241,53,0.12), transparent 60%),
+    radial-gradient(circle at 75% 70%, rgba(232,92,26,0.12), transparent 60%),
+    #181815;
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+  position: relative;
+}
+.overlay-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.12;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* ── Dropdown: trigger pill + panel ── */
+.cp-dropdown {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  align-items: center;
+  z-index: 2;
+}
+
+.cp-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 10px 20px;
+  border-radius: var(--r-pill);
+  background: rgba(25,32,18,0.42);
+  border: 1.5px solid rgba(198,241,53,0.42);
+  backdrop-filter: blur(28px) saturate(1.6);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  box-shadow: var(--glass-highlight), var(--glass-shadow);
+  cursor: pointer;
+  font-family: 'Bebas Neue', sans-serif;
+  color: var(--crema);
+  transition: all 0.25s var(--ease-premium);
+}
+.cp-dropdown-trigger .k {
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  color: var(--verde);
+  opacity: 0.72;
+  text-transform: uppercase;
+}
+.cp-dropdown-trigger .v {
+  font-size: 1.12rem;
+  letter-spacing: 2.5px;
+  color: var(--verde);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.cp-dropdown-trigger .chev {
+  width: 14px;
+  height: 14px;
+  color: var(--verde);
+  transition: transform 0.3s var(--ease-premium);
+}
+.cp-dropdown-trigger:hover { border-color: rgba(198,241,53,0.7); background: rgba(25,32,18,0.55); }
+
+.cp-dropdown-panel {
+  width: 280px;
+  padding: 14px;
+  border-radius: 28px;
+  background: rgba(20,26,14,0.62);
+  backdrop-filter: blur(44px) saturate(1.8);
+  -webkit-backdrop-filter: blur(44px) saturate(1.8);
+  border: 1.5px solid rgba(198,241,53,0.38);
+  box-shadow: var(--glass-shadow-deep), var(--glass-highlight), var(--glass-inner);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dd-item {
+  padding: 15px 12px;
+  text-align: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.02rem;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-radius: 18px;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-premium);
+  border: 1px solid transparent;
+}
+.dd-item:hover { color: var(--crema); background: rgba(255,255,255,0.04); }
+.dd-item.active {
+  color: var(--verde);
+  background: rgba(198,241,53,0.11);
+  border-color: rgba(198,241,53,0.55);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 0 18px rgba(198,241,53,0.08);
+  font-weight: 700;
+}
+
+.dd-footer {
+  margin-top: var(--sp-2);
+  padding: 10px;
+  text-align: center;
+  font-size: 0.64rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-top: 1px solid var(--glass-border-soft);
+  font-weight: 500;
+}
+
+/* ── CTA Play glass (Ver en YouTube) ── */
+.btn-play-glass {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 6px 28px 6px 6px;
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: var(--glass-highlight), 0 8px 32px rgba(0,0,0,0.35);
+  color: var(--crema);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-premium);
+}
+.btn-play-glass:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.28);
+  transform: translateY(-1px);
+}
+.btn-play-glass .play-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.22);
+  flex-shrink: 0;
+}
+.btn-play-glass .play-circle svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--crema);
+  margin-left: 2px;
+}
+
+/* ── Project modal overlay ── */
+.project-modal {
+  position: relative;
+  width: 100%;
+  max-width: 780px;
+  padding: var(--sp-10) var(--sp-10) var(--sp-8);
+  border-radius: var(--r-xl);
+  background: rgba(12,12,12,0.82);
+  backdrop-filter: blur(60px) saturate(1.6);
+  -webkit-backdrop-filter: blur(60px) saturate(1.6);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-deep), var(--glass-highlight);
+  color: var(--crema);
+  z-index: 2;
+}
+
+.modal-close {
+  position: absolute;
+  top: var(--sp-5);
+  right: var(--sp-5);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-premium);
+}
+.modal-close:hover { color: var(--verde); border-color: rgba(198,241,53,0.4); }
+.modal-close svg { width: 14px; height: 14px; }
+
+.modal-client {
+  font-size: 0.68rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--verde);
+  margin-bottom: var(--sp-3);
+  font-weight: 600;
+}
+
+.modal-title {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: clamp(2.4rem, 4.4vw, 3.8rem);
+  line-height: 1;
+  letter-spacing: -1px;
+  margin-bottom: var(--sp-2);
+}
+
+.modal-subtitle {
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: var(--sp-5);
+}
+
+.modal-tags {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-5);
+}
+
+.project-tag {
+  padding: 7px 16px;
+  border-radius: var(--r-pill);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--verde);
+  background: rgba(198,241,53,0.04);
+  border: 1px solid rgba(198,241,53,0.35);
+}
+
+.modal-desc {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  max-width: 600px;
+  padding-bottom: var(--sp-6);
+  border-bottom: 1px solid var(--glass-border-soft);
+  margin-bottom: var(--sp-6);
+}
+
+.modal-credits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-6) var(--sp-5);
+  margin-bottom: var(--sp-6);
+}
+
+.credit-group { display: flex; flex-direction: column; gap: 6px; }
+
+.credit-role {
+  font-size: 0.64rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--verde);
+  font-weight: 700;
+}
+
+.credit-name {
+  font-size: 0.95rem;
+  color: var(--crema);
+  font-weight: 500;
+}
+
+.btn-mini-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-premium);
+  width: fit-content;
+}
+.btn-mini-pill:hover { color: var(--verde); border-color: rgba(198,241,53,0.3); }
+.btn-mini-pill svg { width: 11px; height: 11px; }
+
+.modal-footer {
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--glass-border-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-year {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.98rem;
+  letter-spacing: 5px;
+  color: var(--text-muted);
+}
+
+.btn-outline-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 11px 22px;
+  border-radius: var(--r-pill);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.28);
+  color: var(--crema);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-premium);
+}
+.btn-outline-pill:hover { background: rgba(255,255,255,0.08); border-color: var(--crema); }
+
+.modal-burger {
+  position: absolute;
+  bottom: -26px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(20,20,20,0.78);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--crema);
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.modal-burger .bars { display: flex; flex-direction: column; gap: 3px; }
+.modal-burger .bars span { width: 16px; height: 1.5px; background: currentColor; border-radius: 1px; }
+
+/* ── Menu overlay card (big type) ── */
+.menu-overlay-card {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  aspect-ratio: 4/5;
+  padding: var(--sp-10) var(--sp-8) var(--sp-6);
+  border-radius: var(--r-xl);
+  background: rgba(18,18,18,0.8);
+  backdrop-filter: blur(60px) saturate(1.6);
+  -webkit-backdrop-filter: blur(60px) saturate(1.6);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-deep), var(--glass-highlight);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.menu-items {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+}
+
+.menu-item {
+  font-family: 'Dela Gothic One', sans-serif;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -1px;
+  color: var(--crema);
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-premium);
+}
+.menu-item.active { color: var(--verde); }
+.menu-item.dim { color: var(--text-muted); }
+.menu-item:hover { transform: translateX(4px); }
+
+.menu-footer {
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--glass-border-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--sp-4);
+}
+
+.menu-footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+.menu-footer-links a { color: inherit; text-decoration: none; transition: color 0.2s; }
+.menu-footer-links a:hover { color: var(--crema); }
+
+.menu-lang {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.92rem;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+}
+.menu-lang .active { color: var(--verde); }
+.menu-lang .sep { color: var(--text-muted); }
+
+.menu-close-btn {
+  position: absolute;
+  bottom: -26px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(20,20,20,0.78);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--crema);
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.menu-close-btn svg { width: 14px; height: 14px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   NODE CONNECTORS (flechas animadas entre nodos)
+   ═══════════════════════════════════════════════════════════════ */
+.node-demo {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: var(--sp-6);
+  align-items: stretch;
+  margin-bottom: var(--sp-6);
+}
+
+.node-stage {
+  position: relative;
+  min-height: 340px;
+  padding: 18px;
+  border-radius: var(--r-lg);
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.05);
+  overflow: hidden;
+}
+
+.node-stage::before {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  border-radius: var(--r-md);
+  background:
+    radial-gradient(1200px 400px at 50% 50%, rgba(255,255,255,0.02), transparent 70%),
+    #0a0a0a;
+  pointer-events: none;
+}
+
+.stage-header,
+.stage-footer {
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 3;
+  pointer-events: none;
+}
+.stage-header { top: 28px; }
+.stage-footer { bottom: 28px; }
+
+.stage-tag,
+.stage-expand,
+.stage-reset,
+.stage-hint {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+
+.stage-tag,
+.stage-expand,
+.stage-reset {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+  pointer-events: auto;
+}
+.stage-hint { padding: 8px 2px; color: rgba(255,255,255,0.35); }
+
+.node-paths {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.node-paths path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.node-paths .arrow-head { fill: currentColor; stroke: none; }
+
+.node-paths .anim-path {
+  stroke-dasharray: var(--len, 900);
+  stroke-dashoffset: var(--len, 900);
+  animation: node-draw 3.6s var(--ease-premium) infinite;
+}
+.node-paths .anim-path.delay-1 { animation-delay: 0.25s; }
+.node-paths .anim-path.delay-2 { animation-delay: 0.5s; }
+
+.node-paths .anim-head {
+  opacity: 0;
+  animation: node-head 3.6s var(--ease-premium) infinite;
+}
+.node-paths .anim-head.delay-1 { animation-delay: 0.25s; }
+.node-paths .anim-head.delay-2 { animation-delay: 0.5s; }
+
+@keyframes node-draw {
+  0%   { stroke-dashoffset: var(--len, 900); }
+  55%  { stroke-dashoffset: 0; }
+  85%  { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes node-head {
+  0%, 50%  { opacity: 0; }
+  60%, 85% { opacity: 1; }
+  100%     { opacity: 0; }
+}
+
+.node-entry,
+.node-target {
+  position: absolute;
+  z-index: 2;
+  padding: 12px 22px;
+  min-width: 112px;
+  text-align: center;
+  border-radius: 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--crema);
+  background: #151515;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+}
+.node-entry::after,
+.node-target::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.35);
+}
+.node-entry::after { right: -4px; }
+.node-target::before { left: -4px; }
+
+.node-entry     { left: 24%; top: 50%; transform: translate(-50%, -50%); }
+.node-target.up { left: 80%; top: 30%; transform: translate(-50%, -50%); }
+.node-target.md { left: 80%; top: 50%; transform: translate(-50%, -50%); }
+.node-target.lw { left: 80%; top: 70%; transform: translate(-50%, -50%); }
+
+/* Color variants for each demo */
+.node-demo.curve      .node-paths { color: #fb923c; }
+.node-demo.curve      .node-target,
+.node-demo.curve      .node-entry { background: #2a1a0f; border-color: rgba(251,146,60,0.35); }
+
+.node-demo.scurve     .node-paths { color: #38bdf8; }
+.node-demo.scurve     .node-target,
+.node-demo.scurve     .node-entry { background: #0e1a22; border-color: rgba(56,189,248,0.35); }
+
+.node-demo.dashed     .node-paths { color: #f8fafc; }
+.node-demo.dashed     .node-paths .anim-path { stroke-dasharray: 14 10 !important; animation: node-dash-draw 3.6s var(--ease-premium) infinite; }
+.node-demo.dashed     .node-target,
+.node-demo.dashed     .node-entry { background: #141414; border-color: rgba(248,250,252,0.18); }
+
+.node-demo.open       .node-paths { color: #f5f5f4; }
+.node-demo.open       .node-target,
+.node-demo.open       .node-entry { background: #1a1a1a; border-color: rgba(245,245,244,0.18); }
+
+.node-demo.arc        .node-paths { color: #f59e0b; }
+.node-demo.arc        .node-target,
+.node-demo.arc        .node-entry { background: #241708; border-color: rgba(245,158,11,0.38); }
+
+.node-demo.purple     .node-paths { color: #a78bfa; }
+.node-demo.purple     .node-target,
+.node-demo.purple     .node-entry { background: #1a1226; border-color: rgba(167,139,250,0.38); }
+
+@keyframes node-dash-draw {
+  0%   { stroke-dashoffset: 500; }
+  55%  { stroke-dashoffset: 0; }
+  85%  { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+.node-spec {
+  padding: var(--sp-6);
+  border-radius: var(--r-md);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border-soft);
+  backdrop-filter: var(--glass-blur-soft);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.node-spec h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
+  color: var(--crema);
+  margin: 0;
+}
+.node-spec p {
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin: 0;
+}
+.node-spec pre {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--r-sm);
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.05);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: #c9d1d9;
+  overflow-x: auto;
+}
+.node-spec pre .k { color: #ff7b72; }
+.node-spec pre .v { color: #a5d6ff; }
+.node-spec pre .s { color: #a3e635; }
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .ds-shell { grid-template-columns: 1fr; }
+  .ds-sidebar { position: relative; height: auto; }
+  .ds-main { padding: var(--sp-8) var(--sp-6); }
+  .glass-grid { grid-template-columns: 1fr; }
+  .node-demo { grid-template-columns: 1fr; }
+  .node-stage { min-height: 300px; }
+  .logo-scene { grid-template-columns: 1fr; }
+  .bg-gallery { grid-template-columns: 1fr; }
+  .semantic-row { grid-template-columns: repeat(3, 1fr); }
+  .type-row { grid-template-columns: 1fr; }
+  .type-sample-display { font-size: 3.5rem; }
+  .type-sample-impact, .type-sample-anton { font-size: 2.5rem; }
+  .layer-stack { grid-template-columns: 1fr; }
+  .anim-list { grid-template-columns: 1fr; }
+  .anim-list .c, .anim-list .h { border-right: none; }
+  .ds-hero-meta { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="ds-shell">
+
+  <!-- ═══════════════ SIDEBAR ═══════════════ -->
+  <aside class="ds-sidebar">
+    <div class="ds-brand">
+      <img class="brand-iso-img" src="design-system_assets/isotipo/ISOTIPO_CLASICO-POST_VERDE.svg" alt="Clásico Post">
+      <div class="ds-brand-title">CLÁSICO POST</div>
+      <div class="ds-brand-sub">Design System · v1.0</div>
+    </div>
+
+    <nav class="ds-nav">
+      <div class="ds-nav-group">Fundamentos</div>
+      <a href="#colores"><span class="dot"></span>Colores</a>
+      <a href="#tipografia"><span class="dot"></span>Tipografía</a>
+      <a href="#liquid-glass"><span class="dot"></span>Liquid Glass</a>
+      <a href="#fondos"><span class="dot"></span>Fondos</a>
+
+      <div class="ds-nav-group">Componentes</div>
+      <a href="#botones"><span class="dot"></span>Botones</a>
+      <a href="#pills"><span class="dot"></span>Pills &amp; Badges</a>
+      <a href="#iconos"><span class="dot"></span>Íconos</a>
+      <a href="#cards"><span class="dot"></span>Cards</a>
+      <a href="#navegacion"><span class="dot"></span>Navegación</a>
+
+      <div class="ds-nav-group">Identidad</div>
+      <a href="#isotipo"><span class="dot"></span>Isotipo</a>
+      <a href="#logotipo"><span class="dot"></span>Logotipo</a>
+
+      <div class="ds-nav-group">Movimiento</div>
+      <a href="#flechas"><span class="dot"></span>Flechas &amp; Líneas</a>
+      <a href="#animaciones"><span class="dot"></span>Animaciones</a>
+
+      <div class="ds-nav-group">Guía</div>
+      <a href="#voz"><span class="dot"></span>Voz &amp; Tono</a>
+      <a href="#referencias"><span class="dot"></span>Referencias</a>
+    </nav>
+
+    <div class="ds-sidebar-footer">
+      Clásico Post<br>
+      Cali, Colombia · 2026
+    </div>
+  </aside>
+
+  <!-- ═══════════════ MAIN ═══════════════ -->
+  <main class="ds-main">
+
+    <!-- ───── HERO ───── -->
+    <header class="ds-hero">
+      <div class="ds-eyebrow">Sistema Visual · V1.0</div>
+      <h1>Clásico Post<br><em>Design System</em></h1>
+      <p class="ds-hero-lead">
+        Lenguaje visual unificado para todo el universo Clásico Post —
+        sitio web, dashboards internos, presupuestos y entregables de
+        post-producción. Liquid glass, negro profundo, verde Clásico,
+        tipografía Bebas Neue y una geometría de cápsulas, flechas y
+        orbes vidriosos.
+      </p>
+      <div class="ds-hero-meta">
+        <div class="ds-hero-meta-item"><span class="k">Versión</span><span class="v">1.0</span></div>
+        <div class="ds-hero-meta-item"><span class="k">Fecha</span><span class="v">Abr 2026</span></div>
+        <div class="ds-hero-meta-item"><span class="k">Dominio</span><span class="v">clasicopost.com</span></div>
+        <div class="ds-hero-meta-item"><span class="k">Estilo</span><span class="v">Liquid Glass</span></div>
+      </div>
+    </header>
+
+    <!-- ═══════════════ 01 · COLORES ═══════════════ -->
+    <section id="colores" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">01 · Colores</div>
+          <h2>Paleta de marca</h2>
+          <p class="ds-section-desc">
+            La identidad Clásico Post se organiza en <strong>primarios</strong>
+            (verde, negro, crema) como base del sistema, y <strong>secundarios</strong>
+            (naranja, verde bosque, azul marino, amarillo + negro/crema compartidos)
+            como paleta editorial extendida para categorías, contrastes y acentos.
+          </p>
+        </div>
+        <div class="ds-section-aside">15 tokens base</div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Primarios</div>
+        <div class="palette">
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--verde);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-name">Verde Clásico</div>
+              <div class="swatch-hex">#C6F135</div>
+              <div class="swatch-usage">Acento de marca, CTA, highlights, progreso</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--negro);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-name">Negro Clásico</div>
+              <div class="swatch-hex">#111111</div>
+              <div class="swatch-usage">Fondo base, texto sobre verde, chrome oscuro</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--crema); border: 1px solid rgba(0,0,0,0.08);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-name">Crema</div>
+              <div class="swatch-hex">#F0EDE4</div>
+              <div class="swatch-usage">Texto primario sobre oscuro, fondo day mode</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Secundarios</div>
+        <div class="palette">
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--naranja);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-name">Naranja</div>
+              <div class="swatch-hex">#E85C1A</div>
+              <div class="swatch-usage">Color grading, notas, acentos cálidos</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--verde-bosque);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-name">Verde Bosque</div>
+              <div class="swatch-hex">#2A6856</div>
+              <div class="swatch-usage">Acento editorial profundo, contraste orgánico</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--azul-marino);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-name">Azul Marino</div>
+              <div class="swatch-hex">#1C3F87</div>
+              <div class="swatch-usage">Acento frío, categorías de archivo, VFX</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--amarillo);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-name">Amarillo</div>
+              <div class="swatch-hex">#F0C54A</div>
+              <div class="swatch-usage">Advertencias suaves, highlights editoriales</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--negro);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-name">Negro Clásico</div>
+              <div class="swatch-hex">#111111</div>
+              <div class="swatch-usage">Base compartida con primarios</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--crema); border: 1px solid rgba(0,0,0,0.08);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-name">Crema</div>
+              <div class="swatch-hex">#F0EDE4</div>
+              <div class="swatch-usage">Neutro claro compartido con primarios</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Acentos auxiliares</div>
+        <div class="palette">
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--verde-oscuro);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-name">Verde Oscuro</div>
+              <div class="swatch-hex">#A8D420</div>
+              <div class="swatch-usage">Hover de verde, degradados, totales</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--rojo);"></div>
+            <div class="swatch-meta">
+              <div class="swatch-name">Rojo Alerta</div>
+              <div class="swatch-hex">#E03E3E</div>
+              <div class="swatch-usage">Overdue, errores, estados críticos</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Neutros · Grises funcionales</div>
+        <div class="palette">
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--negro-profundo);"></div>
+            <div class="swatch-meta"><div class="swatch-name">Negro Profundo</div><div class="swatch-hex">#0A0A0A</div><div class="swatch-usage">Base de window chrome</div></div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--gris);"></div>
+            <div class="swatch-meta"><div class="swatch-name">Gris 900</div><div class="swatch-hex">#2A2A2A</div><div class="swatch-usage">Borde sutil, separadores</div></div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--gris-medio);"></div>
+            <div class="swatch-meta"><div class="swatch-name">Gris 600</div><div class="swatch-hex">#3D3D3D</div><div class="swatch-usage">UI secundaria, borde medio</div></div>
+          </div>
+          <div class="swatch">
+            <div class="swatch-chip" style="background: var(--gris-claro);"></div>
+            <div class="swatch-meta"><div class="swatch-name">Gris 400</div><div class="swatch-hex">#888888</div><div class="swatch-usage">Texto deshabilitado</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Departamentos (dashboard)</div>
+        <div class="semantic-row">
+          <div class="sem" style="--c: var(--dept-montaje);">
+            <div class="dot-sem" style="background: var(--dept-montaje); color: var(--dept-montaje);"></div>
+            <div class="sem-label">Montaje</div>
+            <div class="sem-hex">#C6F135</div>
+          </div>
+          <div class="sem" style="--c: var(--dept-color);">
+            <div class="dot-sem" style="background: var(--dept-color); color: var(--dept-color);"></div>
+            <div class="sem-label">Color</div>
+            <div class="sem-hex">#E85C1A</div>
+          </div>
+          <div class="sem" style="--c: var(--dept-audio);">
+            <div class="dot-sem" style="background: var(--dept-audio); color: var(--dept-audio);"></div>
+            <div class="sem-label">Audio</div>
+            <div class="sem-hex">#8B5CF6</div>
+          </div>
+          <div class="sem" style="--c: var(--dept-vfx);">
+            <div class="dot-sem" style="background: var(--dept-vfx); color: var(--dept-vfx);"></div>
+            <div class="sem-label">VFX</div>
+            <div class="sem-hex">#06B6D4</div>
+          </div>
+          <div class="sem" style="--c: var(--dept-animacion);">
+            <div class="dot-sem" style="background: var(--dept-animacion); color: var(--dept-animacion);"></div>
+            <div class="sem-label">Animación</div>
+            <div class="sem-hex">#F59E0B</div>
+          </div>
+          <div class="sem" style="--c: var(--dept-conform);">
+            <div class="dot-sem" style="background: var(--dept-conform); color: var(--dept-conform);"></div>
+            <div class="sem-label">Conform</div>
+            <div class="sem-hex">#AAAAAA</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 02 · TIPOGRAFÍA ═══════════════ -->
+    <section id="tipografia" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">02 · Tipografía</div>
+          <h2>Sistema tipográfico</h2>
+          <p class="ds-section-desc">
+            Bebas Neue como voz principal de display — títulos, números,
+            KPIs y nombres de proyecto. Inter como cuerpo de texto y UI.
+            Dela Gothic One y Anton como recursos de impacto editorial.
+            JetBrains Mono para tokens, timecodes y datos técnicos.
+          </p>
+        </div>
+        <div class="ds-section-aside">4 familias</div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-family">Bebas Neue</div>
+          <div class="type-role">Display · Títulos · KPIs</div>
+          <div class="type-weights">Regular 400 — Google Fonts</div>
+        </div>
+        <div>
+          <div class="type-sample-display">CLÁSICO POST</div>
+          <p style="margin-top: var(--sp-4); color: var(--text-tertiary); font-size: 0.82rem; line-height: 1.55;">
+            Todo en mayúsculas, letter-spacing 1-3px según el tamaño. Jamás en
+            cuerpos de texto largos — sólo títulos, wordmark, capitulares y
+            números destacados (KPIs, totales, timecodes grandes).
+          </p>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-family">Inter</div>
+          <div class="type-role">Body · UI · Labels</div>
+          <div class="type-weights">300 · 400 · 500 · 600 · 700</div>
+        </div>
+        <div>
+          <p class="type-sample-body">
+            Clásico Post es un estudio de post-producción para cine, publicidad y
+            contenido de marca. Montaje, colorización, audio, VFX y animación —
+            un sólo equipo, un sólo criterio. El cuerpo de texto vive en Inter,
+            con ligeros toques de tabular-nums para cifras alineadas.
+          </p>
+          <p style="margin-top: var(--sp-4); color: var(--text-tertiary); font-size: 0.82rem;">
+            Uso: párrafos, navegación secundaria, labels de formularios,
+            micro-copy. Line-height 1.5-1.6. Letter-spacing 0 o 0.5px.
+          </p>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-family">Dela Gothic One</div>
+          <div class="type-role">Impacto editorial</div>
+          <div class="type-weights">Regular 400</div>
+        </div>
+        <div>
+          <div class="type-sample-impact">Detrás de cada frame</div>
+          <p style="margin-top: var(--sp-4); color: var(--text-tertiary); font-size: 0.82rem; line-height: 1.55;">
+            Para titulares ultra-expresivos en piezas editoriales o heros de
+            campaña. Combina con mucho aire alrededor.
+          </p>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-family">Anton</div>
+          <div class="type-role">Condensed impact</div>
+          <div class="type-weights">Regular 400</div>
+        </div>
+        <div>
+          <div class="type-sample-anton">POST PRODUCCIÓN</div>
+          <p style="margin-top: var(--sp-4); color: var(--text-tertiary); font-size: 0.82rem; line-height: 1.55;">
+            Condensada y agresiva. Úsala en bloques de título muy grandes donde
+            Bebas se sienta insuficiente. Una sola palabra o frase corta.
+          </p>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-meta">
+          <div class="type-family">JetBrains Mono</div>
+          <div class="type-role">Code · Tokens · Timecode</div>
+          <div class="type-weights">400 · 500</div>
+        </div>
+        <div>
+          <div class="type-sample-mono">
+            const clasico = { brand: "Clásico Post", year: 2026 };<br>
+            // timecode: 01:23:45:12 · TC_IN 10:00:00:00
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Escala tipográfica</div>
+        <div class="type-scale">
+          <div class="type-scale-item"><span class="tok">display-xl</span><div class="sz" style="font-size: 3rem;">Aa</div><div style="font-size: 0.66rem; color: var(--text-tertiary); margin-top: 2px;">6.5rem · Bebas</div></div>
+          <div class="type-scale-item"><span class="tok">display-lg</span><div class="sz" style="font-size: 2.5rem;">Aa</div><div style="font-size: 0.66rem; color: var(--text-tertiary); margin-top: 2px;">4rem · Bebas</div></div>
+          <div class="type-scale-item"><span class="tok">display-md</span><div class="sz" style="font-size: 2rem;">Aa</div><div style="font-size: 0.66rem; color: var(--text-tertiary); margin-top: 2px;">2.8rem · Bebas</div></div>
+          <div class="type-scale-item"><span class="tok">title</span><div class="sz" style="font-size: 1.5rem;">Aa</div><div style="font-size: 0.66rem; color: var(--text-tertiary); margin-top: 2px;">1.5rem · Bebas</div></div>
+          <div class="type-scale-item"><span class="tok">body-lg</span><div class="sz" style="font-size: 1.1rem; font-family: 'Inter';">Aa</div><div style="font-size: 0.66rem; color: var(--text-tertiary); margin-top: 2px;">1.1rem · Inter</div></div>
+          <div class="type-scale-item"><span class="tok">body</span><div class="sz" style="font-size: 0.95rem; font-family: 'Inter';">Aa</div><div style="font-size: 0.66rem; color: var(--text-tertiary); margin-top: 2px;">0.95rem · Inter</div></div>
+          <div class="type-scale-item"><span class="tok">label</span><div class="sz" style="font-size: 0.72rem; font-family: 'Inter'; text-transform: uppercase; letter-spacing: 1.5px;">Aa</div><div style="font-size: 0.66rem; color: var(--text-tertiary); margin-top: 2px;">0.72rem · Inter uppercase</div></div>
+          <div class="type-scale-item"><span class="tok">mono</span><div class="sz" style="font-size: 0.8rem; font-family: 'JetBrains Mono';">Aa</div><div style="font-size: 0.66rem; color: var(--text-tertiary); margin-top: 2px;">0.8rem · JetBrains</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 03 · LIQUID GLASS ═══════════════ -->
+    <section id="liquid-glass" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">03 · Liquid Glass</div>
+          <h2>Especificación liquid glass</h2>
+          <p class="ds-section-desc">
+            El núcleo del lenguaje visual Clásico Post. Backdrop-filter
+            <em>blur(60–80px) saturate(180%)</em>, borde superior con highlight
+            interno de 1px blanco al 14%, sombra profunda 8-48px, y capas de
+            opacidad blanca que van del 4.5% al 8% según jerarquía.
+          </p>
+        </div>
+        <div class="ds-section-aside">Core spec</div>
+      </div>
+
+      <div class="glass-grid">
+        <div class="glass-demo">
+          <div class="chip-float c1">Montaje</div>
+          <div class="chip-float c2">Color</div>
+          <div class="chip-float c3">VFX</div>
+          <div class="glass-demo-caption">LIQUID GLASS</div>
+          <div class="glass-demo-sub">Blur 60 · Saturate 180</div>
+        </div>
+
+        <div class="glass-tokens">
+          <div class="token-row">
+            <span class="name">--glass-bg</span>
+            <span class="val">rgba(255,255,255,0.045)</span>
+            <div class="preview bg-glass"></div>
+          </div>
+          <div class="token-row">
+            <span class="name">--glass-bg-mid</span>
+            <span class="val">rgba(255,255,255,0.06)</span>
+            <div class="preview bg-glass" style="background: rgba(255,255,255,0.06);"></div>
+          </div>
+          <div class="token-row">
+            <span class="name">--glass-bg-strong</span>
+            <span class="val">rgba(255,255,255,0.08)</span>
+            <div class="preview bg-glass" style="background: rgba(255,255,255,0.08);"></div>
+          </div>
+          <div class="token-row">
+            <span class="name">--glass-border</span>
+            <span class="val">rgba(255,255,255,0.12)</span>
+            <div class="preview" style="background: transparent; border: 2px solid rgba(255,255,255,0.12);"></div>
+          </div>
+          <div class="token-row">
+            <span class="name">--glass-highlight</span>
+            <span class="val">inset 0 1px 0 rgba(255,255,255,0.14)</span>
+            <div class="preview" style="background: rgba(255,255,255,0.06); box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);"></div>
+          </div>
+          <div class="token-row">
+            <span class="name">--glass-shadow</span>
+            <span class="val">0 8px 40px rgba(0,0,0,0.45)</span>
+            <div class="preview" style="background: var(--negro-profundo); box-shadow: 0 4px 20px rgba(0,0,0,0.8);"></div>
+          </div>
+          <div class="token-row">
+            <span class="name">--glass-blur</span>
+            <span class="val">blur(60px) saturate(180%)</span>
+            <div class="preview bg-glass"></div>
+          </div>
+          <div class="token-row">
+            <span class="name">--glass-blur-strong</span>
+            <span class="val">blur(80px) saturate(1.8) brightness(1.05)</span>
+            <div class="preview bg-glass" style="backdrop-filter: blur(30px) saturate(1.8);"></div>
+          </div>
+          <div class="token-row">
+            <span class="name">--grad-verde</span>
+            <span class="val">linear-gradient 135deg verde→oscuro</span>
+            <div class="preview" style="background: var(--grad-verde);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Jerarquía de capas</div>
+        <div class="layer-stack">
+          <div class="layer layer-base">
+            <div class="lvl">01</div>
+            <div class="opacity-val">0.045</div>
+            <div class="label">Base · Fondo UI</div>
+          </div>
+          <div class="layer layer-mid">
+            <div class="lvl">02</div>
+            <div class="opacity-val">0.06</div>
+            <div class="label">Elevada · Hover / Card activa</div>
+          </div>
+          <div class="layer layer-strong">
+            <div class="lvl">03</div>
+            <div class="opacity-val">0.08</div>
+            <div class="label">Flotante · Nav / Chips / Modal</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Receta completa (window chrome)</div>
+        <pre class="code"><span class="c">/* Contenedor principal — dashboards, modales, paneles */</span>
+<span class="k">.window</span> {
+  <span class="k">background</span>: rgba(10, 10, 10, 0.52);
+  <span class="k">backdrop-filter</span>: <span class="v">blur(80px) saturate(1.8) brightness(1.05)</span>;
+  <span class="k">-webkit-backdrop-filter</span>: blur(80px) saturate(1.8) brightness(1.05);
+  <span class="k">border</span>: 1px solid rgba(255, 255, 255, 0.10);
+  <span class="k">border-radius</span>: 16px;
+  <span class="k">box-shadow</span>:
+    0 48px 120px rgba(0, 0, 0, 0.75),
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.13),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.04);
+}
+
+<span class="c">/* Highlight superior (línea de luz horizontal) */</span>
+<span class="k">.window::before</span> {
+  <span class="k">content</span>: <span class="v">''</span>;
+  <span class="k">position</span>: absolute;
+  <span class="k">top</span>: 0;
+  <span class="k">left</span>: 10%;
+  <span class="k">right</span>: 10%;
+  <span class="k">height</span>: 1px;
+  <span class="k">background</span>: linear-gradient(90deg,
+    transparent, rgba(255,255,255,0.22), transparent);
+}</pre>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 04 · FONDOS ═══════════════ -->
+    <section id="fondos" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">04 · Fondos</div>
+          <h2>Fondos de marca</h2>
+          <p class="ds-section-desc">
+            Gradientes radiales suaves que combinan un acento verde en la esquina
+            superior-derecha con un acento naranja en la inferior-izquierda,
+            sobre una base negra elíptica. Sobre todo, grain sutil mediante
+            feTurbulence inline.
+          </p>
+        </div>
+        <div class="ds-section-aside">4 fondos base</div>
+      </div>
+
+      <div class="bg-gallery">
+        <div class="bg-card bg-dark-radial">
+          <div class="bg-card-meta">
+            <div class="n">Dark Radial (body)</div>
+            <div class="d">radial 78% 8% verde · radial 18% 88% naranja · ellipse #181818 → #111111</div>
+          </div>
+        </div>
+        <div class="bg-card bg-window">
+          <div class="bg-card-meta">
+            <div class="n">Window Chrome</div>
+            <div class="d">radial 80% 20% verde · radial 20% 80% naranja · ellipse #151210 → #0A0A0A</div>
+          </div>
+        </div>
+        <div class="bg-card bg-day">
+          <div class="bg-card-meta" style="background: rgba(255,255,255,0.7); color: var(--negro); border-color: rgba(0,0,0,0.1);">
+            <div class="n" style="color: var(--negro);">Day Mode</div>
+            <div class="d" style="color: rgba(0,0,0,0.6);">radial 78% 8% verde · radial 18% 88% naranja · linear #F6F2E6 → #EEE8D6</div>
+          </div>
+        </div>
+        <div class="bg-card bg-grain">
+          <div class="bg-card-meta">
+            <div class="n">Grain Overlay</div>
+            <div class="d">feTurbulence 0.9 · mix-blend-mode overlay · opacity 0.035-0.15</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Receta de grain</div>
+        <pre class="code"><span class="c">/* Grain sutil global — aplicado sobre body::before */</span>
+<span class="k">body::before</span> {
+  <span class="k">content</span>: <span class="v">''</span>;
+  <span class="k">position</span>: fixed;
+  <span class="k">inset</span>: 0;
+  <span class="k">background-image</span>: url(<span class="v">"data:image/svg+xml;utf8,&lt;svg ...&gt;
+    &lt;filter id='n'&gt;
+      &lt;feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/&gt;
+      &lt;feColorMatrix values='0 0 0 0 0  ...  0 0 0 0.35 0'/&gt;
+    &lt;/filter&gt;
+    &lt;rect width='100%' height='100%' filter='url(%23n)'/&gt;
+  &lt;/svg&gt;"</span>);
+  <span class="k">opacity</span>: 0.035;
+  <span class="k">mix-blend-mode</span>: overlay;
+  <span class="k">pointer-events</span>: none;
+  <span class="k">z-index</span>: 1000;
+}</pre>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 05 · BOTONES ═══════════════ -->
+    <section id="botones" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">05 · Botones</div>
+          <h2>Sistema de botones</h2>
+          <p class="ds-section-desc">
+            Siete variantes cubren todo el universo Clásico Post — desde el
+            CTA verde sólido hasta el icon-button rotatorio. Todos comparten
+            border-radius pill, letter-spacing 2px, uppercase y una curva de
+            easing <em>cubic-bezier(0.16, 1, 0.3, 1)</em>.
+          </p>
+        </div>
+        <div class="ds-section-aside">7 variantes</div>
+      </div>
+
+      <div class="btn-grid">
+        <div class="btn-demo">
+          <div class="btn-demo-head">
+            <span class="btn-demo-name">Primary</span>
+            <span class="btn-demo-class">.btn-primary</span>
+          </div>
+          <div class="btn-demo-stage">
+            <button class="btn-primary">Solicitar presupuesto</button>
+            <button class="btn-primary">Ver</button>
+          </div>
+          <div class="arrow-desc">Verde sólido sobre negro. CTA primario, máximo 1 por vista.</div>
+        </div>
+
+        <div class="btn-demo">
+          <div class="btn-demo-head">
+            <span class="btn-demo-name">Outline</span>
+            <span class="btn-demo-class">.btn-outline</span>
+          </div>
+          <div class="btn-demo-stage">
+            <button class="btn-outline">Contacto</button>
+            <button class="btn-outline">Ver más</button>
+          </div>
+          <div class="arrow-desc">CTA secundario. Se invierte a crema sólido en hover.</div>
+        </div>
+
+        <div class="btn-demo">
+          <div class="btn-demo-head">
+            <span class="btn-demo-name">Glass</span>
+            <span class="btn-demo-class">.btn-glass</span>
+          </div>
+          <div class="btn-demo-stage">
+            <button class="btn-glass">Descargar</button>
+            <button class="btn-glass">Export PDF</button>
+          </div>
+          <div class="arrow-desc">Liquid glass sobre fondos con imagen/gradiente. Acento verde en hover.</div>
+        </div>
+
+        <div class="btn-demo">
+          <div class="btn-demo-head">
+            <span class="btn-demo-name">Export (gradiente)</span>
+            <span class="btn-demo-class">.btn-export</span>
+          </div>
+          <div class="btn-demo-stage">
+            <button class="btn-export">Enviar presupuesto</button>
+          </div>
+          <div class="arrow-desc">CTA de cierre, totales, submit. Gradiente 135° verde → verde-oscuro.</div>
+        </div>
+
+        <div class="btn-demo">
+          <div class="btn-demo-head">
+            <span class="btn-demo-name">Filter Pill</span>
+            <span class="btn-demo-class">.filter-pill</span>
+          </div>
+          <div class="btn-demo-stage">
+            <button class="filter-pill active">Todos</button>
+            <button class="filter-pill">Montaje</button>
+            <button class="filter-pill">Color</button>
+            <button class="filter-pill">VFX</button>
+          </div>
+          <div class="arrow-desc">Filtros de portfolio, tags de dashboard. Estado activo en verde.</div>
+        </div>
+
+        <div class="btn-demo">
+          <div class="btn-demo-head">
+            <span class="btn-demo-name">Mode Toggle</span>
+            <span class="btn-demo-class">.mode-toggle</span>
+          </div>
+          <div class="btn-demo-stage">
+            <button class="mode-toggle"><span class="moon"></span>Dark</button>
+            <button class="mode-toggle day"><span class="moon"></span>Day</button>
+          </div>
+          <div class="arrow-desc">Switch día/noche. Persiste en localStorage.</div>
+        </div>
+
+        <div class="btn-demo">
+          <div class="btn-demo-head">
+            <span class="btn-demo-name">Icon / Cursor</span>
+            <span class="btn-demo-class">.btn-icon</span>
+          </div>
+          <div class="btn-demo-stage">
+            <button class="btn-icon"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+            <button class="btn-icon"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M12 5v14M5 12h14"/></svg></button>
+            <button class="btn-icon"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M6 18L18 6M8 6h10v10"/></svg></button>
+          </div>
+          <div class="arrow-desc">Círculo vidrioso. Rota 45° en hover y se invierte a verde.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 06 · PILLS & BADGES ═══════════════ -->
+    <section id="pills" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">06 · Pills &amp; Badges</div>
+          <h2>Etiquetas, estados y servicios</h2>
+          <p class="ds-section-desc">
+            Pequeños elementos de información — servicios por departamento,
+            estados de proyecto, planos destacados y badges neutrales.
+          </p>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Service badges (por departamento)</div>
+        <div class="pills-stack">
+          <span class="service-badge b-montaje">Montaje</span>
+          <span class="service-badge b-color">Color</span>
+          <span class="service-badge b-audio">Audio</span>
+          <span class="service-badge b-vfx">VFX</span>
+          <span class="service-badge b-anim">Animación</span>
+          <span class="service-badge">Conform</span>
+          <span class="service-badge">Titulado</span>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Cap pills</div>
+        <div class="pills-stack">
+          <span class="cap-pill">15 Sec</span>
+          <span class="cap-pill">30 Sec</span>
+          <span class="cap-pill">60 Sec</span>
+          <span class="cap-pill">90 Sec</span>
+          <span class="cap-pill">Cutdown ×3</span>
+          <span class="cap-pill">Social ×5</span>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Planos destacados &amp; estados</div>
+        <div class="pills-stack">
+          <span class="planos-badge">12 Planos VFX</span>
+          <span class="planos-badge">Color HDR</span>
+          <span class="planos-badge">Mix 5.1</span>
+          <span class="status-pill s-active">En curso</span>
+          <span class="status-pill s-warn">Por vencer</span>
+          <span class="status-pill s-overdue">Overdue</span>
+          <span class="status-pill s-done">Entregado</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 07 · ÍCONOS ═══════════════ -->
+    <section id="iconos" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">07 · Íconos</div>
+          <h2>Círculos de servicio</h2>
+          <p class="ds-section-desc">
+            Íconos line-art 1.4px sobre círculo glass 72×72. En hover el
+            círculo se rellena de verde Clásico y el stroke se invierte a
+            negro. Misma geometría para todos los servicios.
+          </p>
+        </div>
+        <div class="ds-section-aside">5 servicios</div>
+      </div>
+
+      <div class="icons-grid">
+        <div class="icon-card">
+          <div class="service-icon has-real">
+            <img class="service-icon-real ico-default" src="design-system_assets/iconos/ICON-EDIT_CLASICO-POST_VERDE.svg" alt="Edición">
+            <img class="service-icon-real ico-hover" src="design-system_assets/iconos/ICON-EDIT_CLASICO-POST_NEGRO.svg" alt="">
+          </div>
+          <div class="icon-name">Edición</div>
+          <div class="icon-desc">Montaje y ritmo</div>
+        </div>
+
+        <div class="icon-card">
+          <div class="service-icon has-real">
+            <img class="service-icon-real ico-default" src="design-system_assets/iconos/ICON-COLOR_CLASICO-POST_BLANCO.svg" alt="Color">
+            <img class="service-icon-real ico-hover" src="design-system_assets/iconos/ICON-COLOR_CLASICO-POST_NEGRO.svg" alt="">
+          </div>
+          <div class="icon-name">Color</div>
+          <div class="icon-desc">Corrección y look</div>
+        </div>
+
+        <div class="icon-card">
+          <div class="service-icon has-real">
+            <img class="service-icon-real ico-default" src="design-system_assets/iconos/ICON-AUDIO_CLASICO-POST_BLANCO.svg" alt="Audio">
+            <img class="service-icon-real ico-hover" src="design-system_assets/iconos/ICON-AUDIO_CLASICO-POST_NEGRO.svg" alt="">
+          </div>
+          <div class="icon-name">Audio</div>
+          <div class="icon-desc">Mezcla y diseño sonoro</div>
+        </div>
+
+        <div class="icon-card">
+          <div class="service-icon has-real">
+            <img class="service-icon-real ico-default" src="design-system_assets/iconos/ICON-VFX_CLASICO-POST_BLANCO.svg" alt="VFX">
+            <img class="service-icon-real ico-hover" src="design-system_assets/iconos/ICON-VFX_CLASICO-POST_NEGRO.svg" alt="">
+          </div>
+          <div class="icon-name">VFX</div>
+          <div class="icon-desc">Composición y 3D</div>
+        </div>
+
+        <div class="icon-card">
+          <div class="service-icon has-real">
+            <img class="service-icon-real ico-default" src="design-system_assets/iconos/ICON-COORDINACION_CLASICO-POST_BLANCO.svg" alt="Coordinación">
+            <img class="service-icon-real ico-hover" src="design-system_assets/iconos/ICON-COORDINACION_CLASICO-POST_NEGRO.svg" alt="">
+          </div>
+          <div class="icon-name">Coordinación</div>
+          <div class="icon-desc">Producción y entrega</div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Variantes cromáticas por ícono</div>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6; max-width: 620px; margin-bottom: var(--sp-5);">
+          Cada ícono existe en 7 variantes: <em>blanco</em>, <em>negro</em>, <em>verde</em>,
+          <em>verde militar</em>, <em>amarillo</em>, <em>naranja</em> y <em>azul</em>.
+          Archivos SVG en <code style="font-family: 'JetBrains Mono'; font-size: 0.78rem; color: var(--verde);">design-system_assets/iconos/</code>.
+        </p>
+        <div class="asset-grid-4">
+          <div class="variant-card"><div class="variant-stage"><img class="service-icon-real" style="width:52px;height:52px;" src="design-system_assets/iconos/ICON-EDIT_CLASICO-POST_BLANCO.svg" onerror="this.src='design-system_assets/iconos/ICON-EDIT_CLASICO-POST_VERDE.svg'" alt=""></div><div class="variant-label">Blanco</div><div class="variant-hex">#FFFFFF</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="service-icon-real" style="width:52px;height:52px;" src="design-system_assets/iconos/ICON-EDIT_CLASICO-POST_VERDE.svg" alt=""></div><div class="variant-label">Verde Clásico</div><div class="variant-hex">#C6F135</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="service-icon-real" style="width:52px;height:52px;" src="design-system_assets/iconos/ICON-EDIT_CLASICO-POST_VERDE-MILITAR.svg" alt=""></div><div class="variant-label">Verde Militar</div><div class="variant-hex">#5d6b2a</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="service-icon-real" style="width:52px;height:52px;" src="design-system_assets/iconos/ICON-EDIT_CLASICO-POST_NARANJA.svg" alt=""></div><div class="variant-label">Naranja</div><div class="variant-hex">#E85C1A</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="service-icon-real" style="width:52px;height:52px;" src="design-system_assets/iconos/ICON-EDIT_CLASICO-POST_AMARILLO.svg" alt=""></div><div class="variant-label">Amarillo</div><div class="variant-hex">#F5D021</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="service-icon-real" style="width:52px;height:52px;" src="design-system_assets/iconos/ICON-EDIT_CLASICO-POST_AZUL.svg" alt=""></div><div class="variant-label">Azul</div><div class="variant-hex">#2E74D9</div></div>
+          <div class="variant-card light"><div class="variant-stage"><img class="service-icon-real" style="width:52px;height:52px;" src="design-system_assets/iconos/ICON-EDIT_CLASICO-POST_NEGRO.svg" alt=""></div><div class="variant-label">Negro</div><div class="variant-hex">#2A2A2A</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 08 · CARDS ═══════════════ -->
+    <section id="cards" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">08 · Cards</div>
+          <h2>Sistema de cards</h2>
+          <p class="ds-section-desc">
+            Cinco arquetipos de card cubren todos los casos: KPI (dashboard),
+            capsule (presupuesto), project (sidebar), equipo (créditos) y
+            nota/scenario (highlights contextuales).
+          </p>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">KPI Cards</div>
+        <div class="cards-grid">
+          <div class="kpi-card accent-verde">
+            <div class="kpi-value">24</div>
+            <div class="kpi-label">Proyectos activos</div>
+          </div>
+          <div class="kpi-card accent-naranja">
+            <div class="kpi-value">7</div>
+            <div class="kpi-label">Entregas esta semana</div>
+          </div>
+          <div class="kpi-card accent-rojo">
+            <div class="kpi-value">3</div>
+            <div class="kpi-label">Overdue</div>
+          </div>
+          <div class="kpi-card accent-cyan">
+            <div class="kpi-value">128</div>
+            <div class="kpi-label">Planos VFX pendientes</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Capsule cards (presupuesto)</div>
+        <div class="cards-grid">
+          <div class="cap-card">
+            <div class="cap-card-head">
+              <span class="cap-card-title">Montaje Offline</span>
+              <span class="status-pill s-active">Incluido</span>
+            </div>
+            <div class="cap-card-body">
+              5 jornadas de edición · 2 rondas de revisión · exportación en ProRes
+              422 HQ a 4K. Incluye subtitulado automático y versioning para
+              aprobación.
+            </div>
+            <div class="cap-card-total">
+              <span class="k">Subtotal</span>
+              <span class="v">USD 4.800</span>
+            </div>
+          </div>
+
+          <div class="cap-card">
+            <div class="cap-card-head">
+              <span class="cap-card-title">Color Grading</span>
+              <span class="status-pill s-active">Incluido</span>
+            </div>
+            <div class="cap-card-body">
+              DaVinci Resolve Studio · 3 jornadas de colorista senior · conformado
+              desde XML/AAF · entrega HDR + SDR.
+            </div>
+            <div class="cap-card-total">
+              <span class="k">Subtotal</span>
+              <span class="v">USD 3.200</span>
+            </div>
+          </div>
+
+          <div class="cap-card">
+            <div class="cap-card-head">
+              <span class="cap-card-title">Audio Post</span>
+              <span class="cap-pill">Opcional</span>
+            </div>
+            <div class="cap-card-body">
+              Mezcla estéreo para digital · sound design original · cleanup
+              de diálogos · master en -14 LUFS.
+            </div>
+            <div class="cap-card-total">
+              <span class="k">Subtotal</span>
+              <span class="v">USD 2.400</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="total-final-card" style="margin-top: var(--sp-5);">
+          <div class="label">Total final</div>
+          <div class="amount">USD 10.400</div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Project cards (dashboard sidebar)</div>
+        <div class="cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+          <div class="project-card-dash active">
+            <div class="pc-name">Spot Volkswagen Tiguan</div>
+            <div class="pc-progress">
+              <div class="pc-bar"><div class="pc-fill" style="width: 72%;"></div></div>
+              <span class="pc-pct">72%</span>
+            </div>
+            <div class="pc-meta"><span>Entrega: 05 May</span><span>12 tareas</span></div>
+            <div class="pc-badges">
+              <span class="service-badge b-montaje">Montaje</span>
+              <span class="service-badge b-color">Color</span>
+              <span class="service-badge b-vfx">VFX</span>
+            </div>
+          </div>
+
+          <div class="project-card-dash">
+            <div class="pc-name">Documental Memoria Río</div>
+            <div class="pc-progress">
+              <div class="pc-bar"><div class="pc-fill" style="width: 40%;"></div></div>
+              <span class="pc-pct">40%</span>
+            </div>
+            <div class="pc-meta"><span>Entrega: 22 May</span><span>28 tareas</span></div>
+            <div class="pc-badges">
+              <span class="service-badge b-montaje">Montaje</span>
+              <span class="service-badge b-audio">Audio</span>
+            </div>
+          </div>
+
+          <div class="project-card-dash">
+            <div class="pc-name">Belén Gal · Visuales</div>
+            <div class="pc-progress">
+              <div class="pc-bar"><div class="pc-fill" style="width: 100%;"></div></div>
+              <span class="pc-pct">100%</span>
+            </div>
+            <div class="pc-meta"><span>Entregado</span><span>18 tareas</span></div>
+            <div class="pc-badges">
+              <span class="service-badge b-anim">Animación</span>
+              <span class="service-badge b-vfx">VFX</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Equipo cards (créditos)</div>
+        <div class="cards-grid">
+          <div class="equipo-card">
+            <div class="equipo-avatar">JS</div>
+            <div class="equipo-info">
+              <div class="equipo-nombre">Juan Espeche</div>
+              <div class="equipo-rol">Dirección · Color</div>
+            </div>
+          </div>
+          <div class="equipo-card">
+            <div class="equipo-avatar">MR</div>
+            <div class="equipo-info">
+              <div class="equipo-nombre">Martín Rosa</div>
+              <div class="equipo-rol">Montaje · Conform</div>
+            </div>
+          </div>
+          <div class="equipo-card">
+            <div class="equipo-avatar">AV</div>
+            <div class="equipo-info">
+              <div class="equipo-nombre">Ana Vera</div>
+              <div class="equipo-rol">VFX · Animación</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Notas &amp; escenarios</div>
+        <div class="cards-grid">
+          <div class="nota-card">
+            Los costos estimados consideran jornadas de 8 horas en horario
+            comercial. Retakes fuera del scope acordado se facturan como
+            jornada adicional (USD 800/día).
+          </div>
+          <div class="scenario-card">
+            <div class="scenario-head">Escenario óptimo</div>
+            <div class="scenario-desc">
+              Material filmado en RAW 6K, carpeta ordenada por día de rodaje
+              y plan de edición aprobado. Permite entrega en 10 días hábiles.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 09 · NAVEGACIÓN & OVERLAYS ═══════════════ -->
+    <section id="navegacion" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">09 · Navegación &amp; Overlays</div>
+          <h2>UI flotante sobre contenido</h2>
+          <p class="ds-section-desc">
+            Toda la capa de navegación y overlays de Clásico Post vive
+            <em>sobre</em> imagen y video — trailers, stills, fondos de
+            campaña. Por eso todos estos componentes son liquid glass de
+            alta opacidad (60-80px blur, saturate 1.6-1.8) con bordes
+            iluminados y sombras profundas. Son UI que se apoya, no que compite.
+          </p>
+        </div>
+        <div class="ds-section-aside">5 patterns</div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Nav pill + links (header)</div>
+        <div class="nav-demo">
+          <div class="cp-nav-wrap">
+            <div class="cp-nav-links">
+              <a href="#" class="active">Home</a>
+              <a href="#">Trabajos</a>
+              <a href="#">Servicios</a>
+              <a href="#">Contacto</a>
+            </div>
+            <div class="cp-nav-pill">
+              <div class="burger"><span></span><span></span><span></span></div>
+              Menú
+            </div>
+          </div>
+          <div class="nav-demo-stage">
+            <img src="design-system_assets/imagotipo/imagotipo_clasico-post_verde-principal.svg" alt="Clásico Post" style="max-height: 52px; display: block;">
+            <p style="margin-top: var(--sp-3);">Header flotante sobre hero video</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Dropdown de categorías (filtro trabajos)</div>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; max-width: 640px; margin-bottom: var(--sp-5);">
+          Pill trigger con etiqueta muted (<em>categorías</em>) + valor
+          activo en verde + chevron. Al abrir, panel vertical con items
+          centrados en Bebas, hover suave, estado activo con background
+          verde translúcido e inset highlight superior. Footer con contador
+          de proyectos separado por hairline.
+        </p>
+        <div class="overlay-stage" style="min-height: 560px; align-items: flex-start; padding-top: var(--sp-10);">
+          <div class="cp-dropdown">
+            <button class="cp-dropdown-trigger">
+              <span class="k">Categorías</span>
+              <span class="v">Montaje</span>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+            </button>
+            <div class="cp-dropdown-panel">
+              <div class="dd-item active">Montaje</div>
+              <div class="dd-item">Color</div>
+              <div class="dd-item">VFX</div>
+              <div class="dd-item">Breakdowns</div>
+              <div class="dd-item">Audio</div>
+              <div class="dd-footer">18 Proyectos</div>
+            </div>
+          </div>
+        </div>
+        <pre class="code" style="margin-top: var(--sp-4);"><span class="c">/* Trigger + panel — verde-tinted glass */</span>
+<span class="k">.cp-dropdown-trigger</span> {
+  <span class="k">background</span>: rgba(30,40,20,0.35);
+  <span class="k">border</span>: 1px solid rgba(198,241,53,0.22);
+  <span class="k">backdrop-filter</span>: blur(28px) saturate(1.6);
+}
+<span class="k">.cp-dropdown-panel</span> {
+  <span class="k">background</span>: rgba(25,30,18,0.55);
+  <span class="k">backdrop-filter</span>: blur(40px) saturate(1.8);
+  <span class="k">border-radius</span>: 28px;
+}
+<span class="k">.dd-item.active</span> {
+  <span class="k">background</span>: rgba(198,241,53,0.06);
+  <span class="k">border</span>: 1px solid rgba(198,241,53,0.15);
+  <span class="k">color</span>: <span class="v">#C6F135</span>;
+}</pre>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">CTA glass con play (Ver en YouTube)</div>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; max-width: 640px; margin-bottom: var(--sp-5);">
+          Botón pill con blur muy suave (24px) pensado para apoyarse
+          directamente sobre imagen o video. Círculo play a la izquierda
+          como segundo nivel de glass (opacidad 0.15 sobre 0.08). Se usa
+          en previews de trabajos y en la home.
+        </p>
+        <div class="overlay-stage" style="min-height: 260px;">
+          <button class="btn-play-glass">
+            <span class="play-circle">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </span>
+            Ver en YouTube
+          </button>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Project modal (detalle de trabajo)</div>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; max-width: 640px; margin-bottom: var(--sp-5);">
+          Modal de detalle al hacer click en una card de portfolio.
+          Cliente en verde uppercase → título gigante en Dela Gothic One →
+          subtítulo muted → tags de servicios con borde verde →
+          descripción → grid de créditos en 3 columnas con roles en verde
+          → footer con año y CTA outline. Cierre circular top-right.
+          Burger menu flotante en borde inferior.
+        </p>
+        <div class="overlay-stage" style="min-height: 720px; padding: var(--sp-10) var(--sp-5) 50px;">
+          <div class="project-modal">
+            <button class="modal-close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+            <div class="modal-client">Juliana Velásquez</div>
+            <h2 class="modal-title">EL ACHANTADO</h2>
+            <div class="modal-subtitle">La Ruta Studio</div>
+            <div class="modal-tags">
+              <span class="project-tag">Montaje</span>
+              <span class="project-tag">Color</span>
+              <span class="project-tag">VFX</span>
+            </div>
+            <p class="modal-desc">
+              Videoclip oficial de 'El AchanTAdo' de la cantante colombiana
+              Juliana Velásquez (JULIANA). Lanzado en febrero de 2026, el
+              video acumula más de 2.4 millones de vistas y posicionó a la
+              artista en Times Square de Nueva York a través de Spotify EQUAL.
+              Producido por La Ruta Studio.
+            </p>
+            <div class="modal-credits">
+              <div class="credit-group">
+                <div class="credit-role">Coordinación Post</div>
+                <div class="credit-name">Juanes Sánchez</div>
+              </div>
+              <div class="credit-group">
+                <div class="credit-role">Montaje</div>
+                <div class="credit-name">Más Juan</div>
+              </div>
+              <div class="credit-group">
+                <div class="credit-role">Colorimetría</div>
+                <div class="credit-name">Paula Baeza</div>
+              </div>
+              <div class="credit-group">
+                <div class="credit-role">VFX</div>
+                <div class="credit-name">DAVFX</div>
+              </div>
+              <div class="credit-group">
+                <div class="credit-role">YouTube</div>
+                <button class="btn-mini-pill">
+                  Ver video
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <span class="modal-year">2026</span>
+              <button class="btn-outline-pill">Trabajemos juntos</button>
+            </div>
+            <button class="modal-burger">
+              <div class="bars"><span></span><span></span><span></span></div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Menu overlay (navegación full)</div>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; max-width: 640px; margin-bottom: var(--sp-5);">
+          Overlay central que se abre desde el burger. Card vertical rounded-xl
+          con items en Dela Gothic One gigante apilados — activo en verde
+          Clásico, inactivos en muted. Footer con contacto y selector ES/ENG.
+          Cierre circular flotando debajo de la card.
+        </p>
+        <div class="overlay-stage" style="min-height: 680px; padding: var(--sp-10) var(--sp-5) 50px;">
+          <div class="menu-overlay-card">
+            <div class="menu-items">
+              <a class="menu-item dim">Inicio</a>
+              <a class="menu-item active">Trabajos</a>
+              <a class="menu-item dim">Nosotros</a>
+              <a class="menu-item dim">Contacto</a>
+            </div>
+            <div class="menu-footer">
+              <div class="menu-footer-links">
+                <a href="#">Instagram</a>
+                <a href="#">somos@clasicopost.com</a>
+              </div>
+              <div class="menu-lang">
+                <span class="active">ES</span>
+                <span class="sep">/</span>
+                <span>ENG</span>
+              </div>
+            </div>
+            <button class="menu-close-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 10 · ISOTIPO ═══════════════ -->
+    <section id="isotipo" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">10 · Isotipo</div>
+          <h2>Isotipo Clásico Post</h2>
+          <p class="ds-section-desc">
+            Marca gráfica principal: una forma orgánica, reconocible y
+            escalable. Disponible como SVG vectorial en 7 variantes cromáticas.
+            Se usa como avatar, favicon, watermark y anclaje de marca en
+            lockups con el logotipo.
+          </p>
+        </div>
+        <div class="ds-section-aside">SVG · 7 variantes</div>
+      </div>
+
+      <div class="logo-scene">
+        <div class="logo-card">
+          <div class="logo-card-head">
+            <span class="logo-card-name">Isotipo</span>
+            <span class="logo-card-variant">Principal · Dark bg</span>
+          </div>
+          <div class="logo-stage">
+            <img class="iso-real" src="design-system_assets/isotipo/ISOTIPO_CLASICO-POST_VERDE.svg" alt="Isotipo Clásico Post verde">
+          </div>
+          <div class="logo-card-footer">
+            <span>ISOTIPO_CLASICO-POST_VERDE.svg</span>
+            <span>#C6F135</span>
+          </div>
+        </div>
+
+        <div class="logo-card inverted">
+          <div class="logo-card-head">
+            <span class="logo-card-name">Isotipo</span>
+            <span class="logo-card-variant">Contraste · Light bg</span>
+          </div>
+          <div class="logo-stage">
+            <img class="iso-real" style="animation: none; filter: drop-shadow(0 12px 32px rgba(0,0,0,0.18));" src="design-system_assets/isotipo/ISOTIPO_CLASICO-POST_NEGRO.svg" alt="Isotipo Clásico Post negro">
+          </div>
+          <div class="logo-card-footer">
+            <span>ISOTIPO_CLASICO-POST_NEGRO.svg</span>
+            <span>#2A2A2A</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Variantes cromáticas (7)</div>
+        <div class="asset-grid-4">
+          <div class="variant-card"><div class="variant-stage"><img class="iso-real" src="design-system_assets/isotipo/ISOTIPO_CLASICO-POST_VERDE.svg" alt=""></div><div class="variant-label">Verde Clásico</div><div class="variant-hex">#C6F135</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="iso-real" src="design-system_assets/isotipo/ISOTIPO_CLASICO-POST_VERDE-MILITAR.svg" alt=""></div><div class="variant-label">Verde Militar</div><div class="variant-hex">Muted</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="iso-real" src="design-system_assets/isotipo/ISOTIPO_CLASICO-POST_BLANCO.svg" alt=""></div><div class="variant-label">Blanco</div><div class="variant-hex">#FFFFFF</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="iso-real" src="design-system_assets/isotipo/ISOTIPO_CLASICO-POST_NARANJA.svg" alt=""></div><div class="variant-label">Naranja</div><div class="variant-hex">#E85C1A</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="iso-real" src="design-system_assets/isotipo/ISOTIPO_CLASICO-POST_AMARILLO.svg" alt=""></div><div class="variant-label">Amarillo</div><div class="variant-hex">#F5D021</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="iso-real" src="design-system_assets/isotipo/ISOTIPO_CLASICO-POST_AZUL.svg" alt=""></div><div class="variant-label">Azul</div><div class="variant-hex">#2E74D9</div></div>
+          <div class="variant-card light"><div class="variant-stage"><img class="iso-real" src="design-system_assets/isotipo/ISOTIPO_CLASICO-POST_NEGRO.svg" alt=""></div><div class="variant-label">Negro</div><div class="variant-hex">#2A2A2A</div></div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Tratamiento 3D opcional (home web)</div>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; line-height: 1.6; max-width: 620px;">
+          En la home de clasicopost.com, el isotipo puede renderizarse como
+          esfera 3D de cristal negro con Three.js. Esta especificación no
+          sustituye al isotipo SVG plano — es una <em>expresión ambiental</em>
+          reservada para heros y escenas web interactivas.
+        </p>
+        <pre class="code"><span class="c">// Expresión 3D — sólo para heros web interactivos</span>
+<span class="k">const</span> <span class="v">glassMaterial</span> = <span class="k">new</span> THREE.MeshPhysicalMaterial({
+  <span class="k">transmission</span>: <span class="v">1.0</span>,
+  <span class="k">ior</span>: <span class="v">1.8</span>,
+  <span class="k">thickness</span>: <span class="v">0.5</span>,
+  <span class="k">roughness</span>: <span class="v">0.0</span>,
+  <span class="k">metalness</span>: <span class="v">0.0</span>,
+  <span class="k">envMapIntensity</span>: <span class="v">0.7</span>,
+  <span class="k">attenuationColor</span>: <span class="v">0x000000</span>,
+  <span class="k">attenuationDistance</span>: <span class="v">0.15</span>,
+  <span class="k">clearcoat</span>: <span class="v">1.0</span>,
+  <span class="k">clearcoatRoughness</span>: <span class="v">0.0</span>
+});
+
+<span class="c">// RoomEnvironment para reflexión envolvente</span>
+<span class="k">const</span> <span class="v">env</span> = <span class="k">new</span> RoomEnvironment(renderer);
+scene.environment = pmremGenerator.fromScene(env, 0.04).texture;</pre>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Clear space &amp; tamaños</div>
+        <div class="clear-space">
+          <div class="cs-card">
+            <div class="cs-visual"><img class="iso-real" style="width: 50%; animation: none; filter: none;" src="design-system_assets/isotipo/ISOTIPO_CLASICO-POST_VERDE.svg" alt=""></div>
+            <div class="cs-name">Clear space mínimo</div>
+            <div class="cs-rule">Reservar al menos 50% del ancho del isotipo como margen libre en todos los lados.</div>
+          </div>
+          <div class="cs-card">
+            <div class="cs-visual"><img class="iso-real" style="width: 22%; animation: none; filter: none;" src="design-system_assets/isotipo/ISOTIPO_CLASICO-POST_VERDE.svg" alt=""></div>
+            <div class="cs-name">Tamaño mínimo digital</div>
+            <div class="cs-rule">32px en pantalla. Bajo ese tamaño, usar el logotipo (wordmark) horizontal.</div>
+          </div>
+          <div class="cs-card">
+            <div class="cs-visual"><img class="iso-real" style="width: 75%; animation: none; filter: none;" src="design-system_assets/isotipo/ISOTIPO_CLASICO-POST_VERDE.svg" alt=""></div>
+            <div class="cs-name">Tamaño heroico</div>
+            <div class="cs-rule">En heros y splash screens puede ocupar 40-70% del viewport height.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 11 · LOGOTIPO ═══════════════ -->
+    <section id="logotipo" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">11 · Logotipo &amp; Imagotipo</div>
+          <h2>Logotipo, imagotipo &amp; variantes</h2>
+          <p class="ds-section-desc">
+            El <em>logotipo</em> es la firma tipográfica Clásico Post.
+            El <em>imagotipo</em> combina isotipo + logotipo en un lockup
+            horizontal, y es la aplicación más común en web, nav,
+            presentaciones y email. Todas las variantes son SVG vectoriales.
+          </p>
+        </div>
+        <div class="ds-section-aside">11 variantes</div>
+      </div>
+
+      <div class="logo-scene">
+        <div class="logo-card">
+          <div class="logo-card-head">
+            <span class="logo-card-name">Imagotipo</span>
+            <span class="logo-card-variant">Principal · Dark bg</span>
+          </div>
+          <div class="logo-stage">
+            <img class="logo-asset" src="design-system_assets/imagotipo/imagotipo_clasico-post_verde-principal.svg" alt="Imagotipo Clásico Post">
+          </div>
+          <div class="logo-card-footer">
+            <span>imagotipo_verde-principal.svg</span>
+            <span>Lockup horizontal</span>
+          </div>
+        </div>
+
+        <div class="logo-card inverted">
+          <div class="logo-card-head">
+            <span class="logo-card-name">Imagotipo</span>
+            <span class="logo-card-variant">Contraste · Light bg</span>
+          </div>
+          <div class="logo-stage">
+            <img class="logo-asset" src="design-system_assets/imagotipo/imagotipo_clasico-post_negro.svg" alt="Imagotipo Clásico Post negro">
+          </div>
+          <div class="logo-card-footer">
+            <span>imagotipo_negro.svg</span>
+            <span>Fondos claros</span>
+          </div>
+        </div>
+
+        <div class="logo-card">
+          <div class="logo-card-head">
+            <span class="logo-card-name">Logotipo sólo</span>
+            <span class="logo-card-variant">Wordmark · Dark bg</span>
+          </div>
+          <div class="logo-stage">
+            <img class="logo-asset" src="design-system_assets/logotipo/logotipo_clasico-post_blanco.svg" alt="Logotipo Clásico Post blanco">
+          </div>
+          <div class="logo-card-footer">
+            <span>logotipo_blanco.svg</span>
+            <span>Sin isotipo</span>
+          </div>
+        </div>
+
+        <div class="logo-card">
+          <div class="logo-card-head">
+            <span class="logo-card-name">Nav Lockup</span>
+            <span class="logo-card-variant">Compact · Horizontal</span>
+          </div>
+          <div class="logo-stage">
+            <img class="logo-asset compact" src="design-system_assets/imagotipo/imagotipo_clasico-post_verde-principal.svg" alt="Nav lockup">
+          </div>
+          <div class="logo-card-footer">
+            <span>Nav · Email signature</span>
+            <span>40-56px height</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Imagotipo · Variantes cromáticas</div>
+        <div class="asset-grid-4">
+          <div class="variant-card"><div class="variant-stage"><img class="logo-asset" style="max-height:52px;" src="design-system_assets/imagotipo/imagotipo_clasico-post_verde-principal.svg" alt=""></div><div class="variant-label">Verde Principal</div><div class="variant-hex">Lockup iso+logo</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="logo-asset" style="max-height:52px;" src="design-system_assets/imagotipo/imagotipo_clasico-post_blanco.svg" alt=""></div><div class="variant-label">Blanco</div><div class="variant-hex">#FFFFFF</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="logo-asset" style="max-height:52px;" src="design-system_assets/imagotipo/imagotipo_clasico-post_verde.svg" alt=""></div><div class="variant-label">Verde</div><div class="variant-hex">#C6F135</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="logo-asset" style="max-height:52px;" src="design-system_assets/imagotipo/imagotipo_clasico-post_verde-negro.svg" alt=""></div><div class="variant-label">Verde · Negro</div><div class="variant-hex">Dual-tone</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="logo-asset" style="max-height:52px;" src="design-system_assets/imagotipo/imagotipo_clasico-post_blanco-negro.svg" alt=""></div><div class="variant-label">Blanco · Negro</div><div class="variant-hex">Dual-tone</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="logo-asset" style="max-height:52px;" src="design-system_assets/imagotipo/imagotipo_clasico-post_rojo.svg" alt=""></div><div class="variant-label">Rojo</div><div class="variant-hex">#E03E3E</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="logo-asset" style="max-height:52px;" src="design-system_assets/imagotipo/imagotipo_clasico-post_amarillo.svg" alt=""></div><div class="variant-label">Amarillo</div><div class="variant-hex">#F5D021</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="logo-asset" style="max-height:52px;" src="design-system_assets/imagotipo/imagotipo_clasico-post_azul.svg" alt=""></div><div class="variant-label">Azul</div><div class="variant-hex">#2E74D9</div></div>
+          <div class="variant-card light"><div class="variant-stage"><img class="logo-asset" style="max-height:52px;" src="design-system_assets/imagotipo/imagotipo_clasico-post_negro.svg" alt=""></div><div class="variant-label">Negro</div><div class="variant-hex">#2A2A2A</div></div>
+          <div class="variant-card light"><div class="variant-stage"><img class="logo-asset" style="max-height:52px;" src="design-system_assets/imagotipo/imagotipo_clasico-post_negro-verde.svg" alt=""></div><div class="variant-label">Negro · Verde</div><div class="variant-hex">Dual-tone</div></div>
+          <div class="variant-card light"><div class="variant-stage"><img class="logo-asset" style="max-height:52px;" src="design-system_assets/imagotipo/imagotipo_clasico-post_negro-blanco.svg" alt=""></div><div class="variant-label">Negro · Blanco</div><div class="variant-hex">Dual-tone</div></div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Logotipo sólo · Variantes (sin isotipo)</div>
+        <div class="asset-grid-4">
+          <div class="variant-card"><div class="variant-stage"><img class="logo-asset" style="max-height:48px;" src="design-system_assets/logotipo/logotipo_clasico-post_blanco.svg" alt=""></div><div class="variant-label">Blanco</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="logo-asset" style="max-height:48px;" src="design-system_assets/logotipo/logotipo_clasico-post_verde-principal.svg" alt=""></div><div class="variant-label">Verde Principal</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="logo-asset" style="max-height:48px;" src="design-system_assets/logotipo/logotipo_clasico-post_verde.svg" alt=""></div><div class="variant-label">Verde</div></div>
+          <div class="variant-card"><div class="variant-stage"><img class="logo-asset" style="max-height:48px;" src="design-system_assets/logotipo/logotipo_clasico-post_rojo.svg" alt=""></div><div class="variant-label">Rojo</div></div>
+          <div class="variant-card light"><div class="variant-stage"><img class="logo-asset" style="max-height:48px;" src="design-system_assets/logotipo/logotipo_clasico-post_negro.svg" alt=""></div><div class="variant-label">Negro</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 12 · FLECHAS & LÍNEAS ═══════════════ -->
+    <section id="flechas" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">12 · Flechas &amp; Líneas</div>
+          <h2>Vocabulario direccional</h2>
+          <p class="ds-section-desc">
+            Dos familias. Helpers de movimiento (líneas finas, pulse dots,
+            arrow-push) para el layout editorial. Y conectores de nodos con
+            trazos animados — curva, s-curve, dashed, open y arc — para
+            diagramas, step-flows y onboarding guiado.
+          </p>
+        </div>
+        <aside class="ds-section-aside">
+          <div class="aside-pill">11 patterns</div>
+          <div class="aside-label">Helpers + conectores</div>
+        </aside>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Helpers de movimiento</div>
+        <div class="arrows-grid">
+          <div class="arrow-demo">
+            <div class="arrow-name">Line Reveal</div>
+            <div class="arrow-stage">
+              <div class="line-reveal" style="max-width: 220px;"></div>
+            </div>
+            <div class="arrow-desc">Divisor horizontal con fade hacia los lados, flecha en extremo derecho.</div>
+          </div>
+
+          <div class="arrow-demo">
+            <div class="arrow-name">Arrow Push</div>
+            <div class="arrow-stage">
+              <div class="arrow-long"></div>
+            </div>
+            <div class="arrow-desc">Flecha verde con animación de desplazamiento horizontal 2.4s infinite.</div>
+          </div>
+
+          <div class="arrow-demo">
+            <div class="arrow-name">Rotate Arrow</div>
+            <div class="arrow-stage">
+              <div class="arrow-circle"></div>
+            </div>
+            <div class="arrow-desc">Círculo con flecha interna, rotación lenta 8s lineal infinita.</div>
+          </div>
+
+          <div class="arrow-demo">
+            <div class="arrow-name">Diagonal Draw</div>
+            <div class="arrow-stage">
+              <div class="arrow-diagonal">
+                <svg viewBox="0 0 180 120">
+                  <path d="M 10 100 Q 60 40 90 60 T 170 20" />
+                  <path d="M 160 15 l 10 5 l -5 10" />
+                </svg>
+              </div>
+            </div>
+            <div class="arrow-desc">Línea dibujada con stroke-dashoffset, loop 3s.</div>
+          </div>
+
+          <div class="arrow-demo">
+            <div class="arrow-name">Pulse Dot</div>
+            <div class="arrow-stage">
+              <div class="pulse-dot"></div>
+            </div>
+            <div class="arrow-desc">Punto verde con anillo pulsante — live / grabando / en-curso.</div>
+          </div>
+
+          <div class="arrow-demo">
+            <div class="arrow-name">Section Line</div>
+            <div class="arrow-stage">
+              <div class="section-line" style="width: 100%;"><span class="label">CAPÍTULO I</span></div>
+            </div>
+            <div class="arrow-desc">Separador con label centrada — divide secciones largas.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Conectores de nodos · animados</div>
+
+        <!-- ─── 1. CURVE / GESTURE ─── -->
+        <div class="node-demo curve">
+          <div class="node-stage">
+            <div class="stage-header">
+              <div class="stage-tag">Curve / Gesture</div>
+              <button class="stage-expand">Expand</button>
+            </div>
+            <svg class="node-paths" viewBox="0 0 600 360" preserveAspectRatio="none">
+              <path class="anim-path"        style="--len: 560" d="M 145 180 Q 330 80 480 108"          stroke="currentColor" stroke-width="7"/>
+              <path class="anim-path delay-1" style="--len: 520" d="M 145 180 Q 330 180 480 180"          stroke="currentColor" stroke-width="7"/>
+              <path class="anim-path delay-2" style="--len: 560" d="M 145 180 Q 330 280 480 252"          stroke="currentColor" stroke-width="7"/>
+              <polygon class="arrow-head anim-head"        points="480,108 465,100 465,116"/>
+              <polygon class="arrow-head anim-head delay-1" points="480,180 465,172 465,188"/>
+              <polygon class="arrow-head anim-head delay-2" points="480,252 465,244 465,260"/>
+            </svg>
+            <div class="node-entry">Entry</div>
+            <div class="node-target up">Upper target</div>
+            <div class="node-target md">Middle target</div>
+            <div class="node-target lw">Lower target</div>
+            <div class="stage-footer">
+              <div class="stage-hint">Click or drag points to reroute</div>
+              <button class="stage-reset">Reset</button>
+            </div>
+          </div>
+          <div class="node-spec">
+            <h3>Gesture Curve</h3>
+            <p>Trazo curvo para dirigir la mirada entre dos hitos con un gesto más editorial y menos mecánico.</p>
+<pre>&lt;<span class="v">Arrow</span>
+  <span class="k">from</span>={{ x: 278, y: 402 }}
+  <span class="k">to</span>={{ x: 996, y: 238 }}
+  <span class="k">shape</span>=<span class="s">"curve"</span>
+  <span class="k">bend</span>={0.24}
+  <span class="k">stroke</span>=<span class="s">"#fb923c"</span>
+  <span class="k">strokeWidth</span>={8}
+  <span class="k">tail</span>={{ shape: <span class="s">'dot'</span>, size: 6 }}
+  <span class="k">head</span>={{ shape: <span class="s">'triangle'</span>, size: 18 }}
+/&gt;</pre>
+          </div>
+        </div>
+
+        <!-- ─── 2. S-CURVE ROUTING (teal) ─── -->
+        <div class="node-demo scurve">
+          <div class="node-stage">
+            <div class="stage-header">
+              <div class="stage-tag">S-Curve / Routing</div>
+              <button class="stage-expand">Expand</button>
+            </div>
+            <svg class="node-paths" viewBox="0 0 600 360" preserveAspectRatio="none">
+              <path class="anim-path"        style="--len: 700" d="M 145 176 H 300 V 108 H 480" stroke="currentColor" stroke-width="6" fill="none"/>
+              <path class="anim-path delay-1" style="--len: 340" d="M 145 182 H 480"              stroke="currentColor" stroke-width="6" fill="none"/>
+              <path class="anim-path delay-2" style="--len: 700" d="M 145 188 H 300 V 252 H 480" stroke="currentColor" stroke-width="6" fill="none"/>
+              <rect class="arrow-head anim-head"        x="472" y="100" width="14" height="14" transform="rotate(45 479 107)"/>
+              <rect class="arrow-head anim-head delay-1" x="472" y="175" width="14" height="14" transform="rotate(45 479 182)"/>
+              <rect class="arrow-head anim-head delay-2" x="472" y="245" width="14" height="14" transform="rotate(45 479 252)"/>
+            </svg>
+            <div class="node-entry">Entry</div>
+            <div class="node-target up">Upper target</div>
+            <div class="node-target md">Middle target</div>
+            <div class="node-target lw">Lower target</div>
+            <div class="stage-footer">
+              <div class="stage-hint">Click or drag points to reroute</div>
+              <button class="stage-reset">Reset</button>
+            </div>
+          </div>
+          <div class="node-spec">
+            <h3>S-Curve Routing</h3>
+            <p>Variante de radio bajo dentro de la misma familia s-curve, útil cuando quieres leer un elbow ordenado sin cambiar de shape.</p>
+<pre>&lt;<span class="v">Arrow</span>
+  <span class="k">from</span>={{ x: 254, y: 226 }}
+  <span class="k">to</span>={{ x: 952, y: 476 }}
+  <span class="k">shape</span>=<span class="s">"s-curve"</span>
+  <span class="k">cornerRadius</span>={14}
+  <span class="k">stroke</span>=<span class="s">"#38bdf8"</span>
+  <span class="k">strokeWidth</span>={7}
+  <span class="k">tail</span>={{ shape: <span class="s">'bar'</span>, size: 18 }}
+  <span class="k">head</span>={{ shape: <span class="s">'diamond'</span>, size: 24, fill: <span class="s">'#7dd3fc'</span> }}
+/&gt;</pre>
+          </div>
+        </div>
+
+        <!-- ─── 3. DASHED CALLOUT ─── -->
+        <div class="node-demo dashed">
+          <div class="node-stage">
+            <div class="stage-header">
+              <div class="stage-tag">Line / Callout</div>
+              <button class="stage-expand">Expand</button>
+            </div>
+            <svg class="node-paths" viewBox="0 0 600 360" preserveAspectRatio="none">
+              <path class="anim-path"        d="M 145 180 L 480 108" stroke="currentColor" stroke-width="5" fill="none"/>
+              <path class="anim-path delay-1" d="M 145 180 L 480 180" stroke="currentColor" stroke-width="5" fill="none"/>
+              <path class="anim-path delay-2" d="M 145 180 L 480 252" stroke="currentColor" stroke-width="5" fill="none"/>
+              <polygon class="arrow-head anim-head"        points="484,108 468,100 468,116"/>
+              <polygon class="arrow-head anim-head delay-1" points="484,180 468,172 468,188"/>
+              <polygon class="arrow-head anim-head delay-2" points="484,252 468,244 468,260"/>
+            </svg>
+            <div class="node-entry">Entry</div>
+            <div class="node-target up">Upper target</div>
+            <div class="node-target md">Middle target</div>
+            <div class="node-target lw">Lower target</div>
+            <div class="stage-footer">
+              <div class="stage-hint">Click or drag points to reroute</div>
+              <button class="stage-reset">Reset</button>
+            </div>
+          </div>
+          <div class="node-spec">
+            <h3>Dashed Callout</h3>
+            <p>Callout lineal con patrón discontinuo para anotaciones, crops o detalles que no necesitan una curva protagonista.</p>
+<pre>&lt;<span class="v">Arrow</span>
+  <span class="k">from</span>={{ x: 754, y: 300 }}
+  <span class="k">to</span>={{ x: 1120, y: 244 }}
+  <span class="k">shape</span>=<span class="s">"line"</span>
+  <span class="k">stroke</span>=<span class="s">"#f8fafc"</span>
+  <span class="k">strokeWidth</span>={6}
+  <span class="k">strokeDasharray</span>=<span class="s">"16 10"</span>
+  <span class="k">head</span>={{ shape: <span class="s">'triangle'</span>, size: 24 }}
+/&gt;</pre>
+          </div>
+        </div>
+
+        <!-- ─── 4. OPEN S-CURVE ─── -->
+        <div class="node-demo open">
+          <div class="node-stage">
+            <div class="stage-header">
+              <div class="stage-tag">S-Curve / Open</div>
+              <button class="stage-expand">Expand</button>
+            </div>
+            <svg class="node-paths" viewBox="0 0 600 360" preserveAspectRatio="none">
+              <path class="anim-path"        style="--len: 520" d="M 145 178 C 250 180 250 108 340 108"   stroke="currentColor" stroke-width="2.4" fill="none"/>
+              <path class="anim-path delay-1" style="--len: 280" d="M 145 182 L 340 182"                    stroke="currentColor" stroke-width="2.4" fill="none"/>
+              <path class="anim-path delay-2" style="--len: 520" d="M 145 186 C 250 184 250 252 340 252"   stroke="currentColor" stroke-width="2.4" fill="none"/>
+              <path class="anim-head"        d="M 326 100 L 350 108 L 326 116" stroke="currentColor" stroke-width="2.4" fill="none"/>
+              <path class="anim-head delay-1" d="M 326 174 L 350 182 L 326 190" stroke="currentColor" stroke-width="2.4" fill="none"/>
+              <path class="anim-head delay-2" d="M 326 244 L 350 252 L 326 260" stroke="currentColor" stroke-width="2.4" fill="none"/>
+            </svg>
+            <div class="node-entry">Entry</div>
+            <div class="node-target up">Upper target</div>
+            <div class="node-target md">Middle target</div>
+            <div class="node-target lw">Lower target</div>
+            <div class="stage-footer">
+              <div class="stage-hint">Click or drag points to reroute</div>
+              <button class="stage-reset">Reset</button>
+            </div>
+          </div>
+          <div class="node-spec">
+            <h3>Open S-Curve</h3>
+            <p>Variante editorial de s-curve con trazo muy fino y cabeza abierta de dos líneas — dirección presente pero poco invasiva.</p>
+<pre>&lt;<span class="v">Arrow</span>
+  <span class="k">from</span>={{ x: 336, y: 360 }}
+  <span class="k">to</span>={{ x: 918, y: 176 }}
+  <span class="k">shape</span>=<span class="s">"s-curve"</span>
+  <span class="k">cornerRadius</span>={92}
+  <span class="k">stroke</span>=<span class="s">"#f5f5f4"</span>
+  <span class="k">strokeWidth</span>={2.5}
+  <span class="k">head</span>={{ shape: <span class="s">'open'</span>, size: 18 }}
+/&gt;</pre>
+          </div>
+        </div>
+
+        <!-- ─── 5. ARC SWEEP ─── -->
+        <div class="node-demo arc">
+          <div class="node-stage">
+            <div class="stage-header">
+              <div class="stage-tag">Arc / Sweep</div>
+              <button class="stage-expand">Expand</button>
+            </div>
+            <svg class="node-paths" viewBox="0 0 600 360" preserveAspectRatio="none">
+              <path class="anim-path"        style="--len: 760" d="M 150 180 A 180 180 0 0 1 480 108" stroke="currentColor" stroke-width="7" fill="none"/>
+              <path class="anim-path delay-1" style="--len: 340" d="M 150 180 L 480 180"              stroke="currentColor" stroke-width="7" fill="none"/>
+              <path class="anim-path delay-2" style="--len: 760" d="M 150 180 A 180 180 0 0 0 480 252" stroke="currentColor" stroke-width="7" fill="none"/>
+              <polygon class="arrow-head anim-head"        points="480,108 464,100 464,116"/>
+              <polygon class="arrow-head anim-head delay-1" points="480,180 464,172 464,188"/>
+              <polygon class="arrow-head anim-head delay-2" points="480,252 464,244 464,260"/>
+            </svg>
+            <div class="node-entry">Entry</div>
+            <div class="node-target up">Upper target</div>
+            <div class="node-target md">Middle target</div>
+            <div class="node-target lw">Lower target</div>
+            <div class="stage-footer">
+              <div class="stage-hint">Click or drag points to reroute</div>
+              <button class="stage-reset">Reset</button>
+            </div>
+          </div>
+          <div class="node-spec">
+            <h3>Arc Sweep</h3>
+            <p>Arco amplio para conectar elementos con una trayectoria limpia y un barrido más ornamental que una curva convencional.</p>
+<pre>&lt;<span class="v">Arrow</span>
+  <span class="k">from</span>={{ x: 336, y: 360 }}
+  <span class="k">to</span>={{ x: 918, y: 544 }}
+  <span class="k">shape</span>=<span class="s">"arc"</span>
+  <span class="k">bend</span>={0.34}
+  <span class="k">stroke</span>=<span class="s">"#f59e0b"</span>
+  <span class="k">strokeWidth</span>={7}
+  <span class="k">head</span>={{ shape: <span class="s">'triangle'</span>, size: 22 }}
+/&gt;</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 13 · ANIMACIONES ═══════════════ -->
+    <section id="animaciones" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">13 · Animaciones</div>
+          <h2>Movimiento &amp; easing</h2>
+          <p class="ds-section-desc">
+            Todo el movimiento respira el mismo lenguaje: suave, con
+            <em>cubic-bezier(0.16, 1, 0.3, 1)</em> como ease por defecto,
+            duraciones 250-800ms, reveals discretos desde 16px abajo, y
+            rotaciones lentas (6-8s) para elementos ambientales.
+          </p>
+        </div>
+      </div>
+
+      <div class="anim-list">
+        <div class="h">Nombre</div>
+        <div class="h">Uso</div>
+        <div class="h">Duración · Ease</div>
+
+        <div class="c name">fadeIn</div>
+        <div class="c desc">Entrada de KPIs y cards — opacity 0→1, translateY 8px→0</div>
+        <div class="c dur">0.3s · ease</div>
+
+        <div class="c name">reveal</div>
+        <div class="c desc">Scroll reveal para secciones largas (IntersectionObserver)</div>
+        <div class="c dur">0.8s · premium</div>
+
+        <div class="c name">cardFadeIn</div>
+        <div class="c desc">Cascade de cards en grids (stagger 60ms)</div>
+        <div class="c dur">0.5s · premium</div>
+
+        <div class="c name">logoIn</div>
+        <div class="c desc">Entrada del isotipo en el hero — scale 0.8→1, opacity 0→1</div>
+        <div class="c dur">1.2s · premium</div>
+
+        <div class="c name">float</div>
+        <div class="c desc">Flotación vertical del isotipo (loop infinito)</div>
+        <div class="c dur">6s · ease-in-out</div>
+
+        <div class="c name">rotate-slow</div>
+        <div class="c desc">Rotación lenta del círculo-flecha ambiental</div>
+        <div class="c dur">8s · linear infinite</div>
+
+        <div class="c name">arrow-push</div>
+        <div class="c desc">Desplazamiento horizontal de flechas CTA</div>
+        <div class="c dur">2.4s · premium infinite</div>
+
+        <div class="c name">draw</div>
+        <div class="c desc">Dibujo de path SVG (stroke-dashoffset)</div>
+        <div class="c dur">3s · premium infinite</div>
+
+        <div class="c name">pulse</div>
+        <div class="c desc">Anillo expandente en pulse-dot (live / grabando)</div>
+        <div class="c dur">2s · infinite</div>
+
+        <div class="c name">btn-icon hover</div>
+        <div class="c desc">Rotación 45° + inversión de color a verde</div>
+        <div class="c dur">0.3s · premium</div>
+
+        <div class="c name">progress-fill</div>
+        <div class="c desc">Relleno de barra de progreso en project-card</div>
+        <div class="c dur">0.6s · premium</div>
+      </div>
+
+      <div class="ds-sub">
+        <div class="ds-sub-title">Easings de marca</div>
+        <pre class="code"><span class="k">--ease-premium</span>: cubic-bezier(<span class="v">0.16, 1, 0.3, 1</span>);   <span class="c">/* default */</span>
+<span class="k">--ease-out</span>:     cubic-bezier(<span class="v">0.22, 1, 0.36, 1</span>);  <span class="c">/* salidas rápidas */</span>
+<span class="k">--ease-in-out</span>:  cubic-bezier(<span class="v">0.65, 0, 0.35, 1</span>); <span class="c">/* movimientos largos */</span></pre>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 14 · VOZ & TONO ═══════════════ -->
+    <section id="voz" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">14 · Voz &amp; Tono</div>
+          <h2>Cómo escribe Clásico</h2>
+          <p class="ds-section-desc">
+            Directo, técnico, con respeto por el oficio. Hablamos como un
+            equipo que filma, corta, colorea y mezcla — no como una agencia.
+          </p>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <div class="cap-card">
+          <div class="cap-card-head">
+            <span class="cap-card-title" style="color: var(--verde);">Sí</span>
+          </div>
+          <div class="cap-card-body">
+            <div>&ldquo;Entregamos el copión final el viernes a las 15hs.&rdquo;</div>
+            <div>&ldquo;Color grading en DaVinci, conformado desde XML.&rdquo;</div>
+            <div>&ldquo;Tres días de mezcla · master a -14 LUFS.&rdquo;</div>
+          </div>
+        </div>
+        <div class="cap-card">
+          <div class="cap-card-head">
+            <span class="cap-card-title" style="color: var(--rojo);">No</span>
+          </div>
+          <div class="cap-card-body">
+            <div>&ldquo;Soluciones 360° para tu storytelling audiovisual.&rdquo;</div>
+            <div>&ldquo;Potenciamos tu marca con narrativas impactantes.&rdquo;</div>
+            <div>&ldquo;Contanos tu sueño, nosotros lo hacemos realidad.&rdquo;</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ 15 · REFERENCIAS ═══════════════ -->
+    <section id="referencias" class="ds-section">
+      <div class="ds-section-head">
+        <div class="ds-section-head-main">
+          <div class="ds-section-num">15 · Referencias</div>
+          <h2>Fuentes del sistema</h2>
+          <p class="ds-section-desc">
+            Este design system consolida y formaliza el lenguaje visual
+            ya implementado en los siguientes productos vivos de Clásico Post.
+          </p>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <div class="cap-card">
+          <div class="cap-card-head">
+            <span class="cap-card-title">Sitio web</span>
+            <span class="cap-pill">Live</span>
+          </div>
+          <div class="cap-card-body">
+            <div>clasicopost.com — home con escena 3D Three.js</div>
+            <div>/trabajos — grid filtrable de portfolio</div>
+            <div>/trabajos/belen-gal-visuales — template de caso</div>
+          </div>
+        </div>
+        <div class="cap-card">
+          <div class="cap-card-head">
+            <span class="cap-card-title">Dashboard interno</span>
+            <span class="cap-pill">V6</span>
+          </div>
+          <div class="cap-card-body">
+            <div>DASHBOARD-PROYECTOS_V6.html</div>
+            <div>Ventana liquid glass · sidebar · KPIs · project cards</div>
+            <div>Colores por departamento · timeline de entregas</div>
+          </div>
+        </div>
+        <div class="cap-card">
+          <div class="cap-card-head">
+            <span class="cap-card-title">Presupuesto template</span>
+            <span class="cap-pill">Cliente</span>
+          </div>
+          <div class="cap-card-body">
+            <div>000_PRESUPUESTO_CLIENTE_TIPO_MARCA-ARTISTA.html</div>
+            <div>Cap pills · capsule cards · total-final · notas</div>
+            <div>Equipo · pipeline · escenarios</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <footer class="ds-footer">
+      <img class="footer-logo-asset" src="design-system_assets/imagotipo/imagotipo_clasico-post_verde-principal.svg" alt="Clásico Post">
+      <div class="ds-footer-meta">
+        Design System v1.0 · Abril 2026 · Cali, Colombia
+      </div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   Sidebar active link on scroll
+   ═══════════════════════════════════════════════════════════════ */
+const sections = document.querySelectorAll('.ds-section');
+const navLinks = document.querySelectorAll('.ds-nav a');
+
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+
+sections.forEach(s => navObserver.observe(s));
+
+/* Reveal on scroll */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.ds-section, .ds-hero').forEach(el => {
+  el.classList.add('reveal');
+  revealObserver.observe(el);
+});
+
+/* Smooth scroll (already via CSS) — ensure hash updates */
+navLinks.forEach(a => {
+  a.addEventListener('click', (e) => {
+    const href = a.getAttribute('href');
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', href);
+    }
+  });
+});
+</script>
+</body>
+</html>
